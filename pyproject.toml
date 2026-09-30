@@ -1,0 +1,59 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "urps"
+dynamic = ["version"]
+description = "University Ranking Prediction System: clean ranking data, build leakage-free features, predict next-cycle scores."
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "Kulbossynov Alisher" }]
+requires-python = ">=3.11"
+dependencies = [
+    "numpy>=1.26",
+    "pandas>=2.2",
+    "scikit-learn>=1.4",
+    "matplotlib>=3.8",
+    "pandera>=0.24",
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Information Analysis",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "pytest-cov>=5", "hypothesis>=6", "ruff>=0.6", "mypy>=1.10", "build>=1.2"]
+
+[project.scripts]
+urps = "urps.cli:main"
+
+[tool.setuptools.dynamic]
+version = { attr = "urps.__version__" }
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests", "src"]
+addopts = "-ra --doctest-modules --ignore=src/urps/__main__.py --cov=urps --cov-report=term-missing --cov-fail-under=80"
+doctest_optionflags = ["NORMALIZE_WHITESPACE"]
+
+[tool.coverage.run]
+source = ["urps"]
+omit = ["*/urps/__main__.py"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "NPY", "PD", "SIM"]
+
+[tool.mypy]
+python_version = "3.11"
+ignore_missing_imports = true
+warn_unused_ignores = true
+check_untyped_defs = true
