@@ -1,0 +1,13 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "University Ranking Prediction System (URPS)"
+version: 0.1.0
+date-released: 2026-09-30
+license: MIT
+authors:
+  - family-names: Kulbossynov
+    given-names: Alisher
+keywords:
+  - university rankings
+  - machine learning
+  - reproducible research
