@@ -1,0 +1,105 @@
+# Continuous Integration: runs on every push to main and on every pull request.
+# Stages: quality (lint, format, types) -> test (OS x Python matrix) -> smoke run of the pipeline.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  PIP_DISABLE_PIP_VERSION_CHECK: "1"
+
+jobs:
+  quality:
+    name: Quality (ruff, mypy)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: |
+            pyproject.toml
+            constraints.txt
+      - name: Install
+        run: pip install -e ".[dev]" -c constraints.txt
+      - name: Lint
+        run: ruff check --output-format=github .
+      - name: Format check
+        run: ruff format --check .
+      - name: Type check
+        run: mypy src
+
+  test:
+    name: Tests (${{ matrix.os }}, Python ${{ matrix.python-version }})
+    needs: quality
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        python-version: ["3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+          cache-dependency-path: |
+            pyproject.toml
+            constraints.txt
+      - name: Install
+        run: pip install -e ".[dev]" -c constraints.txt
+      - name: Run tests with coverage (fails below 80%)
+        run: pytest --cov-report=xml
+      - name: Upload coverage report
+        if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.11'
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-xml
+          path: coverage.xml
+
+  smoke:
+    name: Pipeline smoke run
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: |
+            pyproject.toml
+            constraints.txt
+      - name: Install
+        run: pip install -e . -c constraints.txt
+      - name: Run full pipeline on the committed sample
+        run: urps run --data data/sample/the_rankings_sample.csv --out reports
+      - name: Check quality gate (NFR1)
+        run: |
+          python - <<'EOF'
+          import json
+          r = json.load(open("reports/metrics.json"))
+          best = r["metrics"][r["best_model"]]
+          print(json.dumps(r["metrics"], indent=2))
+          assert best["r2"] >= 0.85, f"R2 below target: {best['r2']}"
+          assert r["mae_improvement_over_persistence_pct"] > 0, "model does not beat the naive baseline"
+          EOF
+      - name: Forecast one university
+        run: urps predict --data data/sample/the_rankings_sample.csv --university "$(sed -n 2p reports/forecast.csv | cut -d, -f1)"
+      - name: Upload reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: reports
+          path: reports/

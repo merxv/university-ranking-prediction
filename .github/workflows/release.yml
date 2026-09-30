@@ -1,0 +1,37 @@
+# Continuous Delivery: pushing a tag such as v0.1.0 tests, builds and publishes a GitHub Release.
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - name: Install
+        run: pip install -e ".[dev]" -c constraints.txt
+      - name: Check tag matches package version
+        run: |
+          VERSION=$(python -c "import urps; print(urps.__version__)")
+          test "v$VERSION" = "$GITHUB_REF_NAME" || { echo "Tag $GITHUB_REF_NAME != version v$VERSION"; exit 1; }
+      - name: Test
+        run: pytest
+      - name: Build sdist and wheel
+        run: python -m build
+      - name: Generate reports for the release
+        run: |
+          urps run --data data/sample/the_rankings_sample.csv --out reports
+          tar -czf reports.tar.gz reports
+      - name: Publish GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release create "$GITHUB_REF_NAME" dist/* reports.tar.gz --title "$GITHUB_REF_NAME" --generate-notes
