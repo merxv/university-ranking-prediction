@@ -30,3 +30,6 @@ data/raw/
 .idea/
 .DS_Store
 Thumbs.db
+
+# Local assistant / editor config
+.claude/

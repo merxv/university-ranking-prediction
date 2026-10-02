@@ -11,6 +11,7 @@ from __future__ import annotations
 import math
 import re
 from pathlib import Path
+from typing import IO
 
 import pandas as pd
 
@@ -89,8 +90,8 @@ def normalise_name(name: object) -> str:
     return " ".join(str(name).split()).casefold()
 
 
-def load_raw(path: str | Path) -> pd.DataFrame:
-    """Read a raw ranking CSV as strings and check that required columns exist."""
+def load_raw(path: str | Path | IO[bytes]) -> pd.DataFrame:
+    """Read a raw ranking CSV (path or binary file object) as strings and check required columns."""
     raw = pd.read_csv(path, dtype=str, keep_default_na=False)
     missing = [c for c in RAW_COLUMNS if c not in raw.columns]
     if missing:

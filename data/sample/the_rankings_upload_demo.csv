@@ -1,0 +1,423 @@
+world_rank,university_name,country,teaching,international,research,citations,income,total_score,num_students,student_staff_ratio,international_students,year
+9,Central Aldermoor University,Japan,65.1,55.7,66.0,80.4,64.1,69.3,"16,869",16.6,41%,2019
+34,Central Fairhaven University,United Kingdom,48.5,54.0,52.2,49.4,49.9,50.3,"25,429",21.4,31%,2019
+19,Central Greystone University,Japan,63.9,71.0,55.8,61.5,64.1,61.3,"24,528",9.3,39%,2019
+38,Central Ironbridge University,United Kingdom,44.5,36.2,63.2,40.9,43.0,48.4,"17,927",9.3,19%,2019
+5,Central Juniper University,Canada,70.0,50.2,81.0,73.1,62.1,72.6,"38,368",10.2,2%,2019
+33,Central Kingsport University,Japan,53.7,58.8,52.0,44.6,60.9,51.0,"55,301",12.8,36%,2019
+18,Central Queensbury University,Canada,64.7,64.5,68.6,52.3,63.3,62.1,"17,370",29.1,13%,2019
+52,Central Stonebrook University,France,27.8,35.5,35.9,45.5,37.7,36.4,"20,034",6.6,8%,2019
+35,Central Valemont University,Germany,53.7,63.3,38.4,53.8,68.2,50.2,"30,200",10.4,36%,2019
+54,East Aldermoor University,Japan,43.2,22.8,29.4,39.1,18.1,35.7,"13,681",10.0,32%,2019
+58,East Deepwell University,United Kingdom,21.1,9.3,22.3,35.9,15.9,24.9,"33,500",17.4,11%,2019
+37,East Eastvale University,United States,41.9,47.9,51.9,51.4,53.5,48.5,"51,891",6.4,14%,2019
+50,East Ironbridge University,Germany,42.5,31.7,32.9,46.5,44.4,40.1,"38,239",17.0,42%,2019
+15,East Westbury University,Kazakhstan,68.5,43.2,57.0,71.5,56.2,63.8,"12,318",9.9,14%,2019
+1,Eastvale Institute of Technology,United Kingdom,77.7,92.8,86.9,85.3,97.2,84.4,"14,395",12.5,32%,2019
+=46,Greystone Institute of Technology,Australia,39.8,39.2,50.2,37.0,43.4,42.1,"7,529",25.0,8%,2019
+49,Highgate Institute of Technology,Kazakhstan,37.8,49.1,46.6,36.4,36.1,40.8,"57,174",10.4,37%,2019
+30,Hollowmere Institute of Technology,United Kingdom,41.6,47.7,56.2,58.3,51.5,51.7,"22,733",20.8,7%,2019
+=7,National Brightwater University,France,69.1,57.4,72.5,75.7,68.7,71.2,"19,005",15.8,24%,2019
+29,National Caldera University,France,50.8,44.0,48.1,58.9,56.6,52.1,"50,490",16.0,4%,2019
+=39,National Deepwell University,Germany,52.3,44.4,48.0,45.9,36.0,48.1,"19,848",25.6,26%,2019
+23,National Elmstead University,Kazakhstan,59.7,66.8,47.7,57.5,73.0,56.3,"15,856",9.9,38%,2019
+10,National Hollowmere University,Canada,67.2,55.6,76.1,58.3,68.8,66.4,"17,417",28.2,6%,2019
+44,National Queensbury University,Kazakhstan,34.8,41.5,47.3,45.8,51.4,42.8,"26,058",27.4,14%,2019
+27,North Clearwater University,United States,53.3,53.9,61.4,53.0,50.8,55.6,"6,863",22.0,35%,2019
+=25,North Ironbridge University,United Kingdom,45.4,71.8,61.2,56.7,53.3,55.7,"40,400",7.2,28%,2019
+53,North Kingsport University,Australia,28.7,30.6,40.6,41.1,31.5,36.2,"26,478",21.9,15%,2019
+17,North Marlow University,Kazakhstan,67.8,68.7,60.2,56.5,78.3,62.5,"59,131",20.4,29%,2019
+48,North Valemont University,Canada,39.4,43.0,41.3,42.9,39.3,41.3,"47,614",24.5,22%,2019
+=8,Northfield Institute of Technology,Japan,72.2,70.9,69.3,71.2,82.4,71.2,"25,323",11.1,39%,2019
+=26,Pacific Deepwell University,Germany,56.5,45.2,58.8,54.5,54.4,55.7,"44,015",28.9,15%,2019
+20,Pacific Elmstead University,Australia,52.3,54.9,69.1,60.0,55.6,60.0,"48,886",27.3,35%,2019
+36,Pacific Queensbury University,Australia,41.7,52.0,48.4,61.1,34.5,50.1,"14,502",8.7,29%,2019
+24,Royal Brightwater University,United Kingdom,59.3,52.5,52.6,58.2,49.2,56.2,"12,038",13.6,34%,2019
+60,Royal Fairhaven University,France,20.2,25.3,20.0,27.5,31.3,23.0,"10,500",6.8,18%,2019
+55,Royal Hollowmere University,Japan,35.6,36.2,34.0,25.7,30.3,32.1,"5,443",25.9,33%,2019
+13,Royal Lakeside University,France,59.9,68.8,70.8,64.4,-,65.4,"21,383",28.0,32%,2019
+59,Royal Oakridge University,France,36.0,22.5,29.0,5.2,23.5,23.3,"47,682",29.8,19%,2019
+14,South Bellmont University,Japan,74.4,48.3,68.0,57.3,58.6,65.0,"48,015",20.7,3%,2019
+56,South Hollowmere University,United States,31.4,22.5,23.7,38.3,25.9,30.4,"23,815",22.0,43%,2019
+16,South Kingsport University,Germany,63.1,54.2,55.2,73.4,64.6,63.2,"30,115",22.3,33%,2019
+51,South Oakridge University,Japan,34.5,16.4,41.7,41.8,41.4,37.7,"46,154",19.7,11%,2019
+11,State Bellmont University,Germany,73.7,61.9,73.2,52.9,62.8,66.1,"56,938",28.9,33%,2019
+22,State Brightwater University,Australia,63.9,68.2,52.2,56.1,51.2,58.1,"19,331",20.6,14%,2019
+57,State Elmstead University,France,32.6,33.3,30.1,25.0,28.5,29.5,"40,445",14.1,22%,2019
+3,State Fairhaven University,Germany,79.1,63.0,71.5,79.2,66.3,75.3,"37,382",18.3,39%,2019
+2,State Glenrock University,Japan,83.3,68.2,77.2,94.3,-,83.2,"38,603",6.4,21%,2019
+28,State Stonebrook University,Kazakhstan,60.0,64.5,40.4,57.1,52.9,53.4,"49,539",23.4,14%,2019
+31,State Thornbury University,Germany,60.9,52.4,48.5,43.6,57.0,51.3,"46,988",22.7,15%,2019
+=40,State Westbury University,United Kingdom,51.7,53.4,47.6,44.1,40.7,48.1,"26,110",16.1,5%,2019
+41,Technical Bellmont University,France,53.1,42.1,50.9,39.1,40.2,47.1,"44,931",26.4,11%,2019
+12,Technical Foxhill University,France,62.5,70.7,63.7,70.1,65.4,65.8,"6,155",24.1,14%,2019
+42,Technical Queensbury University,Canada,50.4,53.1,50.2,36.9,38.1,46.2,"21,937",14.1,9%,2019
+21,Technical Thornbury University,Japan,59.0,57.7,64.8,53.1,62.5,58.9,"15,697",7.9,5%,2019
+45,Technical Yarrow University,Japan,50.1,47.3,42.3,34.4,39.5,42.6,"17,924",9.2,22%,2019
+32,University of Brightwater,Kazakhstan,61.4,34.5,39.4,56.1,59.1,51.2,"53,058",10.4,11%,2019
+=47,University of Northfield,United Kingdom,48.7,38.8,36.5,42.7,31.3,42.1,"28,108",13.3,34%,2019
+4,University of Queensbury,France,64.0,67.4,73.5,81.8,77.7,72.8,"7,110",16.7,42%,2019
+43,University of Stonebrook,United Kingdom,36.3,62.1,42.5,49.2,53.9,44.4,"31,723",28.3,14%,2019
+6,West Elmstead University,Germany,76.5,60.2,71.6,71.8,62.1,72.0,"6,994",12.7,27%,2019
+9,Central Aldermoor University,Japan,65.2,58.4,63.8,81.4,63.3,69.1,"16,801",16.6,41%,2020
+34,Central Fairhaven University,United Kingdom,50.3,53.9,56.0,46.6,-,51.1,"25,116",21.4,31%,2020
+18,Central Greystone University,Japan,64.5,71.2,55.0,61.6,63.2,61.3,"24,450",9.3,39%,2020
+39,Central Ironbridge University,United Kingdom,42.8,37.7,61.5,41.5,42.7,47.6,"18,597",9.3,19%,2020
+=5,Central Juniper University,Canada,68.8,49.2,81.1,74.7,62.9,72.6,"38,301",10.2,2%,2020
+32,Central Kingsport University,Japan,55.6,58.4,52.2,45.1,57.7,51.7,"52,468",12.8,36%,2020
+17,Central Queensbury University,Canada,63.9,63.6,68.1,53.7,66.8,62.1,"18,201",29.1,13%,2020
+53,Central Stonebrook University,France,26.9,34.6,38.9,44.3,36.3,36.5,"19,833",6.6,8%,2020
+35,Central Valemont University,Germany,54.9,59.2,37.3,54.9,69.3,50.3,"30,054",10.4,36%,2020
+52,East Aldermoor University,Japan,46.8,21.5,28.9,41.5,19.0,37.2,"14,081",10.0,32%,2020
+58,East Deepwell University,United Kingdom,21.6,9.8,21.9,34.9,17.6,24.7,"32,864",17.4,11%,2020
+37,East Eastvale University,United States,42.4,50.0,53.2,52.0,53.3,49.4,"54,174",6.4,14%,2020
+50,East Ironbridge University,Germany,43.3,33.6,31.1,43.0,42.3,38.8,"38,520",17.0,42%,2020
+16,East Westbury University,Kazakhstan,68.8,42.8,55.4,72.1,55.7,63.5,"12,737",9.9,14%,2020
+1,Eastvale Institute of Technology,United Kingdom,76.5,92.5,86.9,90.0,-,85.4,"14,402",12.5,32%,2020
+43,Greystone Institute of Technology,Australia,39.1,39.5,56.0,39.2,40.4,44.3,"7,392",25.0,8%,2020
+48,Highgate Institute of Technology,Kazakhstan,38.4,49.0,45.1,36.5,39.7,40.7,"58,299",10.4,37%,2020
+31,Hollowmere Institute of Technology,United Kingdom,40.7,47.9,58.2,58.3,51.8,52.1,"22,304",20.8,7%,2020
+8,  National Brightwater University ,France,68.4,57.9,72.7,73.1,71.2,70.4,"19,890",15.8,24%,2020
+30,National Caldera University,France,51.1,46.3,47.0,60.5,54.6,52.4,"50,616",16.0,4%,2020
+38,National Deepwell University,Germany,56.1,44.7,49.7,43.7,38.6,49.2,"20,640",25.6,26%,2020
+24,National Elmstead University,Kazakhstan,58.0,64.4,49.8,57.0,76.4,56.2,"16,394",9.9,38%,2020
+10,National Hollowmere University,Canada,66.5,54.4,77.2,58.3,70.4,66.4,"17,279",28.2,6%,2020
+=45,National Queensbury University,Kazakhstan,34.9,39.9,48.2,46.0,51.1,43.0,"25,924",27.4,14%,2020
+26,North Clearwater University,United States,53.4,52.8,59.8,52.7,48.7,55.0,"6,737",22.0,35%,2020
+23,North Ironbridge University,United Kingdom,47.6,73.9,60.6,57.8,53.2,56.7,"38,825",7.2,28%,2020
+54,North Kingsport University,Australia,27.9,29.6,40.4,39.4,27.3,35.2,"26,882",21.9,15%,2020
+19,North Marlow University,Kazakhstan,66.8,64.9,60.3,53.7,-,61.0,"56,934",20.4,29%,2020
+49,North Valemont University,Canada,35.7,42.7,41.5,41.2,39.3,39.7,"46,821",24.5,22%,2020
+7,Northfield Institute of Technology,Japan,71.4,72.9,70.8,71.6,81.6,71.7,"24,489",11.1,39%,2020
+25,Pacific Deepwell University,Germany,57.6,45.0,59.9,53.4,53.4,56.0,"42,980",28.9,15%,2020
+20,  Pacific Elmstead University ,Australia,52.7,53.1,71.3,58.5,56.4,60.1,"48,387",27.3,35%,2020
+36,Pacific Queensbury University,Australia,40.3,51.5,49.5,60.3,36.7,49.8,"14,400",8.7,29%,2020
+27,Royal Brightwater University,United Kingdom,58.4,53.0,50.5,55.4,51.6,54.6,"12,352",13.6,34%,2020
+59,Royal Fairhaven University,France,21.3,26.4,18.4,24.7,31.9,22.1,"10,792",6.8,18%,2020
+55,Royal Hollowmere University,Japan,37.6,38.5,32.9,24.3,31.9,32.1,"5,697",25.9,33%,2020
+11,Royal Lakeside University,France,58.9,70.6,73.4,63.5,67.2,65.7,"21,172",28.0,32%,2020
+60,Royal Oakridge University,France,33.6,23.8,25.8,5.6,23.3,21.9,"49,526",29.8,19%,2020
+13,South Bellmont University,Japan,70.8,50.7,69.2,59.2,59.9,65.0,"47,287",20.7,3%,2020
+57,South Hollowmere University,United States,29.4,23.3,24.5,34.0,23.1,28.7,"23,810",22.0,43%,2020
+15,South Kingsport University,Germany,65.3,50.7,59.3,72.4,63.7,64.5,"30,042",22.3,33%,2020
+51,South Oakridge University,Japan,30.2,16.5,43.9,43.5,40.0,37.5,"47,360",19.7,11%,2020
+12,  State Bellmont University ,Germany,73.1,62.2,72.5,51.9,62.5,65.5,"56,944",28.9,33%,2020
+22,State Brightwater University,Australia,64.0,66.8,51.5,53.7,52.7,57.1,"19,113",20.6,14%,2020
+56,State Elmstead University,France,31.2,34.2,30.0,27.9,27.6,30.0,"41,045",14.1,22%,2020
+3,State Fairhaven University,Germany,78.0,63.5,73.0,79.6,66.9,75.6,"36,215",18.3,39%,2020
+2,State Glenrock University,Japan,82.0,66.1,74.4,90.6,63.5,80.6,"37,379",6.4,21%,2020
+28,State Stonebrook University,Kazakhstan,60.5,66.3,41.1,55.0,51.7,53.2,"48,128",23.4,14%,2020
+33,State Thornbury University,Germany,59.3,52.9,50.3,43.7,55.1,51.3,"46,412",22.7,15%,2020
+40,State Westbury University,United Kingdom,48.2,53.9,45.1,45.0,43.1,46.6,"25,081",16.1,5%,2020
+42,Technical Bellmont University,France,52.2,42.2,49.1,36.5,43.4,45.6,"45,649",26.4,11%,2020
+14,Technical Foxhill University,France,60.7,72.6,62.8,68.4,66.4,64.7,"6,250",24.1,14%,2020
+41,Technical Queensbury University,Canada,50.4,53.1,49.8,36.8,36.8,46.0,"22,897",14.1,9%,2020
+21,Technical Thornbury University,Japan,58.6,54.0,66.0,54.0,62.6,59.2,"15,177",7.9,5%,2020
+=46,Technical Yarrow University,Japan,51.6,45.8,42.6,34.3,39.3,43.0,"17,539",9.2,22%,2020
+29,  University of Brightwater ,Kazakhstan,62.8,35.2,41.7,57.0,60.0,52.6,"55,215",10.4,11%,2020
+47,University of Northfield,United Kingdom,47.4,37.6,34.1,43.9,30.9,41.2,"28,180",13.3,34%,2020
+=6,University of Queensbury,France,65.3,67.8,74.6,78.8,-,72.6,"7,028",16.7,42%,2020
+44,University of Stonebrook,United Kingdom,38.5,62.9,41.1,47.1,52.9,44.0,"30,279",28.3,14%,2020
+4,West Elmstead University,Germany,77.9,58.9,72.9,72.9,61.6,73.0,"7,011",12.7,27%,2020
+9,Central Aldermoor University,Japan,65.0,58.0,61.7,80.1,65.6,68.0,"16,891",16.6,41%,2021
+30,Central Fairhaven University,United Kingdom,50.1,55.9,56.3,48.3,50.2,51.8,"25,243",21.4,31%,2021
+17,Central Greystone University,Japan,65.6,70.2,55.1,63.6,64.3,62.2,"24,469",9.3,39%,2021
+40,Central Ironbridge University,United Kingdom,40.4,39.6,63.5,38.0,42.1,46.6,"18,045",9.3,19%,2021
+7,Central Juniper University,Canada,67.7,51.7,79.0,74.0,61.4,71.6,"38,520",10.2,2%,2021
+=35,Central Kingsport University,Japan,52.5,57.1,50.8,43.1,59.4,49.7,"53,655",12.8,36%,2021
+16,Central Queensbury University,Canada,61.2,65.0,72.2,52.7,65.4,62.3,"18,218",29.1,13%,2021
+52,Central Stonebrook University,France,25.2,32.6,38.7,47.0,38.7,36.7,"20,067",6.6,8%,2021
+38,Central Valemont University,Germany,52.6,56.6,36.0,53.0,67.6,48.4,"29,771",10.4,36%,2021
+53,East Aldermoor University,Japan,45.7,20.0,29.6,37.9,20.3,35.9,"13,938",10.0,32%,2021
+58,East Deepwell University,United Kingdom,18.2,9.2,19.2,36.4,16.7,23.3,"32,535",17.4,11%,2021
+34,East Eastvale University,United States,42.8,49.5,54.9,51.7,-,49.9,"52,613",6.4,14%,2021
+49,East Ironbridge University,Germany,43.7,32.2,33.2,43.3,42.5,39.5,"40,008",17.0,42%,2021
+18,  East Westbury University ,Kazakhstan,66.6,42.5,52.2,70.7,53.8,61.4,"12,426",9.9,14%,2021
+1,Eastvale Institute of Technology,United Kingdom,76.9,89.3,84.4,90.9,99.4,84.8,"14,477",12.5,32%,2021
+42,Greystone Institute of Technology,Australia,42.9,41.9,57.4,39.2,42.1,46.1,"7,184",25.0,8%,2021
+48,Highgate Institute of Technology,Kazakhstan,38.9,46.0,46.3,35.6,35.4,40.6,"57,810",10.4,37%,2021
+31,Hollowmere Institute of Technology,United Kingdom,40.4,47.2,58.1,56.0,49.6,51.1,"22,813",20.8,7%,2021
+8,National Brightwater University,France,67.8,56.6,74.4,74.3,69.4,70.9,"19,627",15.8,24%,2021
+33,National Caldera University,France,49.4,43.2,44.8,57.9,57.8,50.3,"51,026",16.0,4%,2021
+37,National Deepwell University,Germany,55.3,42.9,49.5,43.9,38.4,48.8,"20,807",25.6,26%,2021
+25,NATIONAL ELMSTEAD UNIVERSITY,Kazakhstan,59.5,63.5,47.2,59.6,77.3,56.6,"16,145",9.9,38%,2021
+=11,National Hollowmere University,Canada,64.8,54.8,73.5,58.1,67.3,64.7,"17,658",28.2,6%,2021
+44,National Queensbury University,Kazakhstan,35.0,42.1,49.9,45.2,51.6,43.5,"25,859",27.4,14%,2021
+27,North Clearwater University,United States,54.4,54.7,58.5,55.0,50.1,55.7,"6,787",22.0,35%,2021
+23,North Ironbridge University,United Kingdom,46.7,71.8,64.6,58.6,56.1,57.8,"39,489",7.2,28%,2021
+54,North Kingsport University,Australia,28.3,27.2,39.3,37.9,26.9,34.3,"26,491",21.9,15%,2021
+19,  North Marlow University ,Kazakhstan,65.7,63.3,58.1,54.5,77.3,60.1,"57,667",20.4,29%,2021
+51,North Valemont University,Canada,34.3,41.8,40.0,37.5,39.3,37.7,"46,172",24.5,22%,2021
+4,Northfield Institute of Technology,Japan,71.9,69.6,74.5,75.3,81.4,73.8,"24,217",11.1,39%,2021
+22,Pacific Deepwell University,Germany,60.7,47.2,59.7,56.4,52.9,57.9,"43,599",28.9,15%,2021
+20,Pacific Elmstead University,Australia,52.3,52.3,68.6,58.6,56.6,59.2,"48,047",27.3,35%,2021
+=36,Pacific Queensbury University,Australia,40.2,50.5,50.4,59.7,31.6,49.7,"13,725",8.7,29%,2021
+26,Royal Brightwater University,United Kingdom,57.6,53.4,53.7,56.9,52.0,55.8,"11,754",13.6,34%,2021
+59,Royal Fairhaven University,France,21.6,27.7,18.5,25.1,33.1,22.5,"10,917",6.8,18%,2021
+55,Royal Hollowmere University,Japan,39.4,39.0,33.9,25.1,30.8,33.2,"5,488",25.9,33%,2021
+10,Royal Lakeside University,France,59.3,71.2,73.7,63.2,65.3,65.8,"21,507",28.0,32%,2021
+60,Royal Oakridge University,France,35.3,22.8,24.7,1.5,25.6,20.8,"49,019",29.8,19%,2021
+15,South Bellmont University,Japan,71.5,51.7,66.0,56.3,59.5,63.5,"47,446",20.7,3%,2021
+57,South Hollowmere University,United States,31.8,24.4,23.0,32.5,24.5,28.6,"24,835",22.0,43%,2021
+13,South Kingsport University,Germany,64.8,51.0,58.3,72.7,65.8,64.2,"30,724",22.3,33%,2021
+50,South Oakridge University,Japan,32.0,19.0,44.4,44.0,40.4,38.6,"47,158",19.7,11%,2021
+14,State Bellmont University,Germany,70.8,62.0,72.0,49.4,63.1,63.9,"55,253",28.9,33%,2021
+24,State Brightwater University,Australia,63.3,66.5,52.5,53.1,50.6,56.9,"19,137",20.6,14%,2021
+56,State Elmstead University,France,30.7,31.8,30.7,26.7,-,29.5,"41,404",14.1,22%,2021
+3,State Fairhaven University,Germany,78.5,64.2,71.9,79.9,67.0,75.6,"37,343",18.3,39%,2021
+2,State Glenrock University,Japan,77.5,66.9,73.0,86.9,63.0,77.8,"37,904",6.4,21%,2021
+28,State Stonebrook University,Kazakhstan,62.2,63.3,43.1,54.1,54.4,53.9,"47,601",23.4,14%,2021
+32,State Thornbury University,Germany,57.7,52.9,49.2,43.4,-,50.5,"47,725",22.7,15%,2021
+39,State Westbury University,United Kingdom,48.4,54.7,48.1,44.1,-,47.3,"25,921",16.1,5%,2021
+43,Technical Bellmont University,France,51.3,41.1,46.4,36.7,41.2,44.4,"45,833",26.4,11%,2021
+=12,Technical Foxhill University,France,60.5,68.8,62.0,70.3,66.7,64.7,"6,123",24.1,14%,2021
+41,Technical Queensbury University,Canada,51.5,52.2,50.1,37.0,35.5,46.4,"22,600",14.1,9%,2021
+21,Technical Thornbury University,Japan,56.0,56.3,63.4,55.7,60.7,58.3,"15,728",7.9,5%,2021
+46,Technical Yarrow University,Japan,50.4,45.1,40.2,35.3,39.9,42.1,"17,731",9.2,22%,2021
+29,University of Brightwater,Kazakhstan,62.8,36.7,43.8,55.3,58.7,52.8,"55,173",10.4,11%,2021
+47,University of Northfield,United Kingdom,47.5,34.8,33.9,45.2,30.0,41.3,"27,893",13.3,34%,2021
+5,University of Queensbury,France,64.0,68.5,72.8,79.7,75.8,72.0,"6,955",16.7,42%,2021
+45,University of Stonebrook,United Kingdom,36.8,60.2,38.3,47.3,54.0,42.6,"31,549",28.3,14%,2021
+6,West Elmstead University,Germany,75.6,60.2,70.5,72.7,64.1,71.8,"6,923",12.7,27%,2021
+7,Central Aldermoor University,Japan,68.5,58.8,66.3,79.7,65.7,70.4,"16,699",16.6,41%,2022
+34,Central Fairhaven University,United Kingdom,48.4,56.1,52.5,48.3,49.6,50.2,"24,754",21.4,31%,2022
+17,Central Greystone University,Japan,61.5,72.0,56.3,64.6,62.8,61.7,"24,915",9.3,39%,2022
+39,Central Ironbridge University,United Kingdom,42.2,40.7,64.0,38.9,43.5,47.7,"18,478",9.3,19%,2022
+8,Central Juniper University,Canada,67.9,52.5,77.9,70.5,59.3,70.3,"39,094",10.2,2%,2022
+32,Central Kingsport University,Japan,55.1,58.2,51.0,44.3,59.7,51.0,"54,743",12.8,36%,2022
+=15,Central Queensbury University,Canada,60.8,65.5,72.7,53.2,66.3,62.6,"17,365",29.1,13%,2022
+51,Central Stonebrook University,France,25.7,36.4,40.4,49.6,40.6,38.4,"19,201",6.6,8%,2022
+38,Central Valemont University,Germany,53.3,54.6,36.6,51.6,67.9,48.2,"29,323",10.4,36%,2022
+52,East Aldermoor University,Japan,46.9,23.0,31.4,37.5,17.9,36.9,"13,664",10.0,32%,2022
+59,EAST DEEPWELL UNIVERSITY,United Kingdom,17.2,8.8,15.4,34.1,19.5,21.1,"32,585",17.4,11%,2022
+30,East Eastvale University,United States,44.5,49.4,56.6,52.8,54.6,51.2,"53,796",6.4,14%,2022
+48,East Ironbridge University,Germany,43.8,30.6,34.8,41.7,43.3,39.5,"39,355",17.0,42%,2022
+20,East Westbury University,Kazakhstan,65.6,39.1,52.2,68.3,52.4,60.1,"12,047",9.9,14%,2022
+1,Eastvale Institute of Technology,United Kingdom,77.0,90.1,86.9,90.4,96.2,85.5,"14,705",12.5,32%,2022
+41,Greystone Institute of Technology,Australia,43.0,41.8,54.9,41.3,41.8,45.9,"7,397",25.0,8%,2022
+49,Highgate Institute of Technology,Kazakhstan,37.0,46.7,44.6,34.9,35.0,39.3,"57,800",10.4,37%,2022
+=36,Hollowmere Institute of Technology,United Kingdom,42.8,45.3,55.2,52.8,49.8,49.9,"22,736",20.8,7%,2022
+9,NATIONAL BRIGHTWATER UNIVERSITY,France,65.4,58.4,72.4,72.6,68.2,69.2,"19,228",15.8,24%,2022
+33,National Caldera University,France,51.4,43.2,45.7,56.4,54.5,50.7,"52,315",16.0,4%,2022
+37,National Deepwell University,Germany,55.9,43.6,48.6,44.9,35.9,49.0,"20,144",25.6,26%,2022
+24,National Elmstead University,Kazakhstan,58.7,63.3,47.3,57.3,75.8,55.7,"16,695",9.9,38%,2022
+14,National Hollowmere University,Canada,63.7,53.8,70.3,56.5,-,62.8,"18,096",28.2,6%,2022
+44,National Queensbury University,Kazakhstan,35.2,40.9,49.5,45.9,52.9,43.6,"26,077",27.4,14%,2022
+27,North Clearwater University,United States,53.8,54.1,58.5,53.0,51.5,54.9,"6,740",22.0,35%,2022
+22,North Ironbridge University,United Kingdom,48.2,72.1,62.7,57.0,59.5,57.3,"38,862",7.2,28%,2022
+55,North Kingsport University,Australia,28.4,26.5,37.0,39.9,28.8,34.3,"27,447",21.9,15%,2022
+19,North Marlow University,Kazakhstan,67.8,61.3,60.1,54.9,76.2,61.3,"60,037",20.4,29%,2022
+53,North Valemont University,Canada,33.6,39.8,35.4,35.6,37.1,35.3,"45,642",24.5,22%,2022
+4,Northfield Institute of Technology,Japan,73.7,69.6,73.2,77.8,78.0,74.6,"25,568",11.1,39%,2022
+=25,Pacific Deepwell University,Germany,56.9,46.8,57.4,55.1,51.7,55.6,"42,295",28.9,15%,2022
+18,Pacific Elmstead University,Australia,53.8,55.4,70.7,61.4,57.0,61.4,"49,357",27.3,35%,2022
+31,Pacific Queensbury University,Australia,41.2,52.1,53.6,59.9,33.5,51.1,"13,929",8.7,29%,2022
+=26,Royal Brightwater University,United Kingdom,57.4,52.7,54.0,56.4,52.3,55.6,"12,132",13.6,34%,2022
+58,Royal Fairhaven University,France,23.8,24.5,18.3,24.8,-,22.7,"10,607",6.8,18%,2022
+54,Royal Hollowmere University,Japan,40.8,37.0,35.8,26.7,31.5,34.6,"5,443",25.9,33%,2022
+12,Royal Lakeside University,France,54.8,67.3,73.5,62.0,67.0,63.8,"21,431",28.0,32%,2022
+60,Royal Oakridge University,France,33.1,22.7,21.9,1.8,26.7,19.4,"49,604",29.8,19%,2022
+=16,South Bellmont University,Japan,69.2,49.1,67.5,54.8,57.1,62.6,"45,784",20.7,3%,2022
+57,South Hollowmere University,United States,32.4,23.0,24.3,30.9,22.9,28.6,"24,722",22.0,43%,2022
+11,South Kingsport University,Germany,67.9,50.5,59.2,68.1,63.1,63.9,"30,266",22.3,33%,2022
+50,South Oakridge University,Japan,31.6,18.7,45.6,44.2,44.1,38.9,"47,742",19.7,11%,2022
+13,State Bellmont University,Germany,71.6,63.5,72.3,46.5,64.0,63.5,"55,001",28.9,33%,2022
+23,State Brightwater University,Australia,62.4,64.9,53.3,51.7,50.6,56.3,"19,348",20.6,14%,2022
+56,State Elmstead University,France,31.0,31.2,28.3,27.8,26.6,29.1,"40,557",14.1,22%,2022
+2,State Fairhaven University,Germany,80.3,64.1,75.8,82.0,67.7,78.0,"36,373",18.3,39%,2022
+3,State Glenrock University,Japan,79.4,66.9,69.9,85.1,61.8,76.9,"38,537",6.4,21%,2022
+28,State Stonebrook University,Kazakhstan,60.5,62.1,42.0,55.3,54.6,53.4,"48,502",23.4,14%,2022
+=35,State Thornbury University,Germany,59.5,50.1,47.6,42.0,55.6,49.9,"47,526",22.7,15%,2022
+40,State Westbury University,United Kingdom,48.1,52.7,48.5,44.5,43.2,47.3,"25,532",16.1,5%,2022
+45,Technical Bellmont University,France,51.4,37.7,43.7,35.5,39.5,43.0,"46,196",26.4,11%,2022
+10,Technical Foxhill University,France,62.4,70.5,60.5,68.4,67.6,64.4,"6,086",24.1,14%,2022
+42,Technical Queensbury University,Canada,52.3,55.3,47.0,36.7,36.1,45.8,"21,986",14.1,9%,2022
+21,Technical Thornbury University,Japan,54.7,55.0,65.3,54.0,59.6,57.8,"15,364",7.9,5%,2022
+43,Technical Yarrow University,Japan,50.3,47.5,45.4,38.3,40.4,44.8,"17,977",9.2,22%,2022
+29,University of Brightwater,Kazakhstan,61.9,37.9,44.9,55.9,58.2,53.1,"52,991",10.4,11%,2022
+46,University of Northfield,United Kingdom,47.2,34.9,36.4,44.3,30.7,41.8,"27,884",13.3,34%,2022
+6,University of Queensbury,France,65.3,67.4,71.1,79.3,75.2,71.7,"6,971",16.7,42%,2022
+47,University of Stonebrook,United Kingdom,34.4,58.9,37.8,45.8,51.7,41.1,"30,902",28.3,14%,2022
+5,West Elmstead University,Germany,76.2,58.5,71.4,73.7,63.0,72.4,"7,142",12.7,27%,2022
+7,Central Aldermoor University,Japan,67.3,59.1,64.7,82.0,64.3,70.2,"16,738",16.6,41%,2023
+31,Central Fairhaven University,United Kingdom,50.8,53.2,52.1,49.8,50.1,51.0,"24,743",21.4,31%,2023
+=15,Central Greystone University,Japan,64.7,72.4,56.4,64.3,64.7,62.7,"23,828",9.3,39%,2023
+40,Central Ironbridge University,United Kingdom,43.1,39.7,62.3,37.5,40.9,46.9,"18,461",9.3,19%,2023
+8,Central Juniper University,Canada,70.5,52.4,75.5,67.8,57.1,69.5,"38,236",10.2,2%,2023
+35,Central Kingsport University,Japan,53.7,59.3,48.9,43.6,61.5,49.8,"53,931",12.8,36%,2023
+=14,Central Queensbury University,Canada,61.6,63.2,72.4,53.7,67.1,62.7,"17,188",29.1,13%,2023
+48,  Central Stonebrook University ,France,27.5,34.0,41.6,50.5,38.5,39.4,"19,361",6.6,8%,2023
+38,Central Valemont University,Germany,53.0,56.5,37.4,51.2,63.3,48.3,"29,336",10.4,36%,2023
+50,East Aldermoor University,Japan,48.9,23.6,33.0,38.1,14.8,38.1,"13,522",10.0,32%,2023
+59,East Deepwell University,United Kingdom,16.6,11.7,15.0,32.1,15.8,20.4,"33,275",17.4,11%,2023
+32,East Eastvale University,United States,42.4,50.8,56.7,52.4,53.9,50.6,"52,229",6.4,14%,2023
+52,East Ironbridge University,Germany,44.9,29.5,29.8,38.1,43.7,37.1,"38,267",17.0,42%,2023
+19,East Westbury University,Kazakhstan,64.5,40.6,53.4,65.9,51.3,59.5,"12,664",9.9,14%,2023
+1,Eastvale Institute of Technology,United Kingdom,76.5,89.8,88.7,87.5,95.4,85.0,"14,767",12.5,32%,2023
+42,Greystone Institute of Technology,Australia,38.7,40.7,55.5,41.1,44.0,44.7,"7,150",25.0,8%,2023
+51,Highgate Institute of Technology,Kazakhstan,38.5,50.0,41.4,31.5,32.5,38.0,"56,129",10.4,37%,2023
+36,Hollowmere Institute of Technology,United Kingdom,43.5,46.7,54.8,51.1,49.0,49.5,"22,766",20.8,7%,2023
+9,National Brightwater University,France,67.0,58.2,69.1,70.1,66.8,67.9,"19,110",15.8,24%,2023
+34,National Caldera University,France,52.1,43.4,43.3,55.5,58.0,50.0,"51,400",16.0,4%,2023
+33,National Deepwell University,Germany,57.4,47.2,50.5,45.6,37.8,50.5,"19,878",25.6,26%,2023
+26,National Elmstead University,Kazakhstan,58.2,64.4,47.4,55.3,74.0,55.0,"16,342",9.9,38%,2023
+13,National Hollowmere University,Canada,65.5,56.0,70.2,56.8,63.7,63.5,"17,683",28.2,6%,2023
+44,National Queensbury University,Kazakhstan,34.6,40.5,51.1,45.1,51.7,43.6,"25,575",27.4,14%,2023
+30,North Clearwater University,United States,52.1,52.2,56.6,49.7,-,52.6,"6,859",22.0,35%,2023
+21,North Ironbridge University,United Kingdom,49.6,74.5,63.3,58.0,56.3,58.2,"40,626",7.2,28%,2023
+55,North Kingsport University,Australia,28.5,28.4,35.6,41.5,27.3,34.5,"27,461",21.9,15%,2023
+20,North Marlow University,Kazakhstan,65.3,62.8,56.7,52.2,77.6,58.9,"57,400",20.4,29%,2023
+54,North Valemont University,Canada,34.2,39.0,34.5,36.3,36.2,35.3,"47,498",24.5,22%,2023
+4,Northfield Institute of Technology,Japan,74.5,71.6,73.2,80.8,80.3,75.9,"25,029",11.1,39%,2023
+22,Pacific Deepwell University,Germany,55.6,45.3,60.0,57.6,49.8,56.6,"42,770",28.9,15%,2023
+18,Pacific Elmstead University,Australia,54.3,56.9,69.4,60.2,55.7,60.8,"50,370",27.3,35%,2023
+29,Pacific Queensbury University,Australia,40.9,53.0,55.3,63.3,33.1,52.7,"13,869",8.7,29%,2023
+27,Royal Brightwater University,United Kingdom,55.5,53.6,52.2,57.5,51.3,54.9,"11,828",13.6,34%,2023
+58,Royal Fairhaven University,France,21.7,25.6,20.1,24.8,35.3,22.8,"10,733",6.8,18%,2023
+53,Royal Hollowmere University,Japan,43.7,39.9,36.5,29.1,31.0,36.6,"5,576",25.9,33%,2023
+=16,Royal Lakeside University,France,53.8,68.0,69.4,61.5,68.4,62.2,"21,034",28.0,32%,2023
+60,Royal Oakridge University,France,31.7,22.4,21.3,1.5,25.2,18.6,"47,056",29.8,19%,2023
+=17,South Bellmont University,Japan,70.7,46.8,66.9,53.3,57.0,62.2,"47,588",20.7,3%,2023
+57,South Hollowmere University,United States,31.9,22.6,20.5,32.1,19.4,27.5,"24,956",22.0,43%,2023
+10,South Kingsport University,Germany,64.4,54.5,61.7,70.0,61.7,64.5,"31,223",22.3,33%,2023
+49,SOUTH OAKRIDGE UNIVERSITY,Japan,31.8,17.8,44.4,43.0,45.1,38.2,"47,478",19.7,11%,2023
+12,State Bellmont University,Germany,72.0,62.0,71.2,48.4,64.5,63.7,"57,256",28.9,33%,2023
+24,State Brightwater University,Australia,63.2,66.0,51.4,51.0,49.5,55.9,"19,441",20.6,14%,2023
+56,State Elmstead University,France,29.6,32.8,29.3,28.2,-,29.3,"39,861",14.1,22%,2023
+2,State Fairhaven University,Germany,79.0,66.5,74.3,81.8,67.6,77.2,"37,080",18.3,39%,2023
+3,State Glenrock University,Japan,79.6,62.6,70.0,85.1,60.3,76.6,"38,161",6.4,21%,2023
+25,State Stonebrook University,Kazakhstan,62.7,63.7,43.6,57.2,53.7,55.2,"48,294",23.4,14%,2023
+37,State Thornbury University,Germany,58.5,48.1,45.5,43.7,57.0,49.3,"47,295",22.7,15%,2023
+39,State Westbury University,United Kingdom,48.5,52.6,47.8,44.1,43.6,47.2,"26,174",16.1,5%,2023
+45,Technical Bellmont University,France,51.4,38.4,40.6,35.5,38.4,42.1,"45,707",26.4,11%,2023
+11,Technical Foxhill University,France,62.0,70.3,59.8,68.1,66.3,63.9,"5,977",24.1,14%,2023
+43,Technical Queensbury University,Canada,52.7,54.3,46.7,31.8,36.7,44.3,"22,585",14.1,9%,2023
+23,Technical Thornbury University,Japan,53.3,60.2,63.4,51.5,59.8,56.5,"15,458",7.9,5%,2023
+41,Technical Yarrow University,Japan,51.7,48.9,44.4,40.9,39.9,45.8,"17,492",9.2,22%,2023
+28,University of Brightwater,Kazakhstan,61.9,39.5,44.0,56.2,61.3,53.2,"55,245",10.4,11%,2023
+46,University of Northfield,United Kingdom,45.4,35.2,38.4,42.5,30.3,41.3,"27,918",13.3,34%,2023
+6,University of Queensbury,France,64.6,66.0,70.0,80.2,75.1,71.3,"7,336",16.7,42%,2023
+47,University of Stonebrook,United Kingdom,34.5,56.5,36.1,44.9,-,40.2,"30,303",28.3,14%,2023
+5,West Elmstead University,Germany,75.1,57.6,73.4,74.4,-,72.8,"6,761",12.7,27%,2023
+7,Central Aldermoor University,Japan,66.0,58.3,67.7,81.7,66.7,70.6,"17,029",16.6,41%,2024
+31,Central Fairhaven University,United Kingdom,49.8,54.6,54.2,50.0,50.4,51.5,"25,256",21.4,31%,2024
+13,Central Greystone University,Japan,64.3,73.0,56.1,63.8,66.0,62.4,"23,867",9.3,39%,2024
+41,Central Ironbridge University,United Kingdom,42.2,36.8,62.5,39.2,39.3,46.9,"18,676",9.3,19%,2024
+8,Central Juniper University,Canada,71.7,53.2,76.0,67.9,-,70.0,"40,339",10.2,2%,2024
+36,Central Kingsport University,Japan,52.6,59.3,48.1,40.9,59.6,48.4,"54,617",12.8,36%,2024
+=14,Central Queensbury University,Canada,59.5,64.5,72.2,54.3,64.3,62.3,"18,151",29.1,13%,2024
+47,Central Stonebrook University,France,29.1,36.5,44.2,51.8,37.6,41.2,"19,833",6.6,8%,2024
+40,Central Valemont University,Germany,51.2,58.7,35.4,50.1,66.0,47.0,"30,385",10.4,36%,2024
+51,East Aldermoor University,Japan,47.2,23.2,35.3,36.7,17.2,37.9,"13,769",10.0,32%,2024
+59,East Deepwell University,United Kingdom,15.6,8.0,14.2,31.9,15.2,19.5,"33,589",17.4,11%,2024
+32,East Eastvale University,United States,43.3,48.8,55.6,52.9,52.3,50.5,"51,995",6.4,14%,2024
+53,East Ironbridge University,Germany,43.6,32.0,28.2,36.9,42.7,36.1,"38,434",17.0,42%,2024
+=23,East Westbury University,Kazakhstan,63.3,41.1,48.9,63.0,-,56.9,"12,292",9.9,14%,2024
+1,Eastvale Institute of Technology,United Kingdom,76.7,91.1,88.6,87.2,98.1,85.1,"14,848",12.5,32%,2024
+39,Greystone Institute of Technology,Australia,43.9,41.9,56.7,43.8,45.9,47.6,"7,433",25.0,8%,2024
+52,Highgate Institute of Technology,Kazakhstan,34.2,47.9,43.1,31.1,32.8,36.9,"57,312",10.4,37%,2024
+33,Hollowmere Institute of Technology,United Kingdom,42.5,46.9,54.5,51.8,47.8,49.4,"23,087",20.8,7%,2024
+9,  National Brightwater University ,France,67.3,56.4,70.4,68.3,-,67.6,"20,057",15.8,24%,2024
+38,National Caldera University,France,49.2,41.4,42.2,53.7,54.8,48.0,"51,499",16.0,4%,2024
+35,National Deepwell University,Germany,53.8,49.9,48.6,44.6,36.1,48.8,"20,556",25.6,26%,2024
+26,National Elmstead University,Kazakhstan,61.0,64.9,46.8,54.6,74.5,55.5,"15,981",9.9,38%,2024
+17,National Hollowmere University,Canada,64.5,54.5,69.3,53.3,64.5,61.8,"17,960",28.2,6%,2024
+43,National Queensbury University,Kazakhstan,38.6,40.0,52.3,45.3,50.6,45.1,"25,052",27.4,14%,2024
+29,North Clearwater University,United States,52.3,52.0,56.6,49.9,47.6,52.7,"6,692",22.0,35%,2024
+19,North Ironbridge University,United Kingdom,49.0,75.0,65.8,58.5,57.9,59.1,"38,604",7.2,28%,2024
+54,North Kingsport University,Australia,28.5,28.3,36.3,40.0,25.9,34.2,"26,616",21.9,15%,2024
+20,North Marlow University,Kazakhstan,66.6,62.3,56.7,49.7,75.4,58.5,"57,774",20.4,29%,2024
+55,North Valemont University,Canada,35.4,38.0,32.8,32.1,35.5,33.8,"45,634",24.5,22%,2024
+3,Northfield Institute of Technology,Japan,76.3,72.4,75.7,80.3,82.2,77.2,"24,774",11.1,39%,2024
+24,Pacific Deepwell University,Germany,56.3,43.6,59.6,58.4,49.9,56.8,"44,526",28.9,15%,2024
+16,Pacific Elmstead University,Australia,54.2,57.4,71.0,62.4,57.6,62.0,"50,002",27.3,35%,2024
+30,Pacific Queensbury University,Australia,43.4,53.2,52.3,61.7,35.5,52.1,"13,808",8.7,29%,2024
+=22,Royal Brightwater University,United Kingdom,58.0,57.1,53.5,59.8,48.3,56.9,"11,897",13.6,34%,2024
+58,Royal Fairhaven University,France,20.6,24.5,24.3,24.7,34.4,23.6,"10,564",6.8,18%,2024
+49,Royal Hollowmere University,Japan,42.2,40.2,39.4,34.0,32.1,38.5,"5,528",25.9,33%,2024
+=15,Royal Lakeside University,France,55.9,68.8,68.2,60.7,67.3,62.3,"20,800",28.0,32%,2024
+60,Royal Oakridge University,France,29.3,20.4,19.0,1.0,23.3,16.9,"49,557",29.8,19%,2024
+18,South Bellmont University,Japan,69.9,44.9,62.9,53.4,56.3,60.6,"46,817",20.7,3%,2024
+57,South Hollowmere University,United States,28.9,19.9,21.4,29.3,21.5,25.9,"23,845",22.0,43%,2024
+=10,South Kingsport University,Germany,63.8,54.0,61.8,71.1,62.3,64.6,"30,398",22.3,33%,2024
+48,  South Oakridge University ,Japan,33.1,18.6,45.7,42.0,44.6,38.8,"45,680",19.7,11%,2024
+12,State Bellmont University,Germany,73.3,60.9,72.8,48.4,-,64.5,"55,231",28.9,33%,2024
+27,State Brightwater University,Australia,62.2,66.5,52.9,48.9,48.4,55.4,"18,844",20.6,14%,2024
+56,State Elmstead University,France,32.8,33.7,27.5,26.6,28.3,29.3,"39,876",14.1,22%,2024
+2,State Fairhaven University,Germany,80.1,67.7,78.1,83.2,69.9,79.3,"36,343",18.3,39%,2024
+4,State Glenrock University,Japan,82.4,62.0,67.4,84.6,59.5,76.5,"37,983",6.4,21%,2024
+25,State Stonebrook University,Kazakhstan,64.0,63.7,44.5,57.2,54.6,55.8,"49,745",23.4,14%,2024
+37,State Thornbury University,Germany,57.9,49.3,45.1,40.5,56.0,48.2,"46,670",22.7,15%,2024
+34,State Westbury University,United Kingdom,49.1,55.3,49.4,48.0,42.0,49.2,"26,048",16.1,5%,2024
+46,Technical Bellmont University,France,46.4,37.9,43.2,36.9,36.7,41.7,"44,855",26.4,11%,2024
+=11,Technical Foxhill University,France,61.2,71.2,62.3,68.7,64.4,64.6,"6,021",24.1,14%,2024
+44,Technical Queensbury University,Canada,51.6,51.7,45.7,28.1,36.2,42.4,"23,190",14.1,9%,2024
+21,Technical Thornbury University,Japan,57.0,56.4,64.2,49.8,58.1,57.0,"15,347",7.9,5%,2024
+42,Technical Yarrow University,Japan,50.6,47.4,47.4,42.2,39.5,46.6,"18,132",9.2,22%,2024
+28,University of Brightwater,Kazakhstan,65.2,40.7,45.3,57.4,61.1,55.0,"55,062",10.4,11%,2024
+45,University of Northfield,United Kingdom,45.5,37.3,37.5,44.6,30.3,41.8,"27,215",13.3,34%,2024
+6,University of Queensbury,France,64.7,68.3,72.2,77.1,72.2,71.1,"7,205",16.7,42%,2024
+50,University of Stonebrook,United Kingdom,30.4,56.4,35.9,43.1,51.8,38.4,"30,787",28.3,14%,2024
+5,West Elmstead University,Germany,75.2,59.2,72.3,72.2,63.6,71.9,"6,775",12.7,27%,2024
+6,Central Aldermoor University,Japan,66.8,58.4,67.3,81.2,65.6,70.6,"16,679",16.6,41%,2025
+=30,Central Fairhaven University,United Kingdom,50.2,54.0,54.4,50.5,51.2,51.9,"25,254",21.4,31%,2025
+15,Central Greystone University,Japan,63.2,73.5,55.2,66.7,67.0,62.7,"24,192",9.3,39%,2025
+38,Central Ironbridge University,United Kingdom,42.9,37.7,64.0,40.7,38.8,48.1,"18,480",9.3,19%,2025
+7,Central Juniper University,Canada,68.5,52.7,75.7,67.7,53.4,68.8,"38,267",10.2,2%,2025
+35,Central Kingsport University,Japan,53.4,59.0,49.8,40.9,56.0,49.0,"55,176",12.8,36%,2025
+16,Central Queensbury University,Canada,58.0,64.7,70.4,53.7,-,61.1,"17,191",29.1,13%,2025
+45,Central Stonebrook University,France,28.1,35.5,45.3,52.2,37.4,41.3,"19,672",6.6,8%,2025
+39,Central Valemont University,Germany,53.9,57.8,33.4,50.2,-,47.2,"30,831",10.4,36%,2025
+51,East Aldermoor University,Japan,45.5,21.6,35.2,36.0,16.9,37.1,"13,734",10.0,32%,2025
+59,East Deepwell University,United Kingdom,15.4,8.9,15.2,27.5,12.0,18.4,"31,926",17.4,11%,2025
+=31,East Eastvale University,United States,43.5,46.7,56.9,56.2,55.6,51.9,"52,995",6.4,14%,2025
+53,East Ironbridge University,Germany,40.6,30.9,27.9,36.2,43.6,34.8,"39,433",17.0,42%,2025
+23,East Westbury University,Kazakhstan,63.0,43.5,47.6,63.8,50.3,56.8,"12,643",9.9,14%,2025
+1,Eastvale Institute of Technology,United Kingdom,77.4,91.1,83.9,87.4,95.8,83.8,"14,155",12.5,32%,2025
+36,Greystone Institute of Technology,Australia,42.6,41.7,59.1,45.7,46.1,48.5,"7,177",25.0,8%,2025
+52,Highgate Institute of Technology,Kazakhstan,35.2,46.2,40.7,31.1,31.2,36.4,"59,206",10.4,37%,2025
+34,Hollowmere Institute of Technology,United Kingdom,43.5,48.7,53.1,52.6,46.9,49.6,"22,478",20.8,7%,2025
+9,National Brightwater University,France,68.3,55.5,69.7,69.8,63.1,68.1,"19,996",15.8,24%,2025
+42,National Caldera University,France,46.5,42.0,39.4,51.8,54.4,45.8,"51,497",16.0,4%,2025
+37,National Deepwell University,Germany,52.3,48.5,48.9,44.5,37.2,48.3,"21,035",25.6,26%,2025
+27,National Elmstead University,Kazakhstan,56.9,64.1,47.3,55.0,74.7,54.5,"16,650",9.9,38%,2025
+12,National Hollowmere University,Canada,65.9,59.1,71.9,55.8,64.0,64.1,"17,871",28.2,6%,2025
+43,National Queensbury University,Kazakhstan,39.0,41.8,50.9,47.6,53.2,45.7,"25,249",27.4,14%,2025
+28,North Clearwater University,United States,52.5,52.0,55.0,52.3,48.2,53.0,"6,972",22.0,35%,2025
+=20,North Ironbridge University,United Kingdom,47.3,73.5,67.2,59.6,52.5,59.1,"38,856",7.2,28%,2025
+55,North Kingsport University,Australia,25.8,27.5,33.8,38.3,25.3,32.1,"27,830",21.9,15%,2025
+=19,North Marlow University,Kazakhstan,66.3,62.8,58.1,50.7,75.2,59.1,"57,876",20.4,29%,2025
+54,North Valemont University,Canada,34.1,38.0,30.9,31.1,36.6,32.6,"46,630",24.5,22%,2025
+3,Northfield Institute of Technology,Japan,75.7,74.0,76.3,81.6,84.3,77.7,"24,529",11.1,39%,2025
+24,Pacific Deepwell University,Germany,56.6,42.1,59.7,55.5,50.2,56.0,"42,790",28.9,15%,2025
+14,Pacific Elmstead University,Australia,55.0,56.6,73.1,63.7,56.9,63.2,"50,314",27.3,35%,2025
+33,Pacific Queensbury University,Australia,43.1,52.2,49.4,59.8,35.4,50.5,"14,294",8.7,29%,2025
+21,Royal Brightwater University,United Kingdom,56.8,55.1,56.0,60.3,48.6,57.3,"11,886",13.6,34%,2025
+58,Royal Fairhaven University,France,18.3,22.8,22.4,23.0,32.9,21.7,"11,009",6.8,18%,2025
+47,Royal Hollowmere University,Japan,42.2,40.1,44.2,37.0,31.9,40.8,"5,614",25.9,33%,2025
+17,Royal Lakeside University,France,56.6,66.7,66.8,57.5,67.4,61.0,"21,106",28.0,32%,2025
+60,Royal Oakridge University,France,28.1,19.3,15.7,2.3,21.4,15.8,"48,212",29.8,19%,2025
+=18,South Bellmont University,Japan,69.2,43.4,63.1,49.5,53.6,59.1,"45,802",20.7,3%,2025
+57,South Hollowmere University,United States,27.3,19.5,21.1,27.6,22.0,24.8,"25,068",22.0,43%,2025
+10,South Kingsport University,Germany,65.1,53.8,65.2,75.2,62.4,67.3,"31,491",22.3,33%,2025
+49,South Oakridge University,Japan,33.4,17.1,48.9,42.6,45.2,39.9,"45,947",19.7,11%,2025
+13,State Bellmont University,Germany,72.6,59.3,71.6,47.8,61.8,63.6,"55,807",28.9,33%,2025
+29,State Brightwater University,Australia,59.9,63.8,49.2,46.5,49.1,52.7,"19,334",20.6,14%,2025
+56,State Elmstead University,France,30.6,34.0,26.8,22.2,29.9,27.2,"41,325",14.1,22%,2025
+2,State Fairhaven University,Germany,81.4,64.5,79.0,85.7,69.1,80.4,"36,030",18.3,39%,2025
+4,State Glenrock University,Japan,77.3,60.5,62.6,81.7,58.2,72.5,"39,016",6.4,21%,2025
+26,State Stonebrook University,Kazakhstan,61.5,61.7,44.2,56.4,-,54.6,"49,857",23.4,14%,2025
+41,State Thornbury University,Germany,56.1,48.4,40.0,40.1,57.9,45.9,"45,750",22.7,15%,2025
+32,State Westbury University,United Kingdom,52.3,57.1,51.0,47.7,43.4,50.7,"25,674",16.1,5%,2025
+48,Technical Bellmont University,France,47.7,36.3,42.0,33.7,38.8,40.7,"45,902",26.4,11%,2025
+11,Technical Foxhill University,France,63.1,71.3,66.6,68.5,64.3,66.4,"5,992",24.1,14%,2025
+46,  Technical Queensbury University ,Canada,50.3,49.0,45.1,26.8,32.2,41.1,"21,924",14.1,9%,2025
+22,Technical Thornbury University,Japan,55.7,58.9,61.8,52.8,60.3,57.0,"15,403",7.9,5%,2025
+40,Technical Yarrow University,Japan,50.2,49.6,49.3,40.3,41.3,46.7,"17,240",9.2,22%,2025
+25,University of Brightwater,Kazakhstan,63.6,42.1,43.9,59.6,61.0,54.8,"53,724",10.4,11%,2025
+44,University of Northfield,United Kingdom,48.0,35.8,35.5,44.9,29.6,41.9,"27,644",13.3,34%,2025
+8,University of Queensbury,France,64.0,65.5,67.7,74.0,-,68.5,"7,179",16.7,42%,2025
+50,University of Stonebrook,United Kingdom,32.5,57.5,36.5,37.7,49.7,37.6,"31,020",28.3,14%,2025
+5,West Elmstead University,Germany,76.1,58.4,72.5,72.6,60.6,72.2,"6,862",12.7,27%,2025
+18,Pacific Elmstead University,Australia,54.3,56.9,69.4,60.2,55.7,60.8,"50,370",27.3,35%,2023
+49,East Ironbridge University,Germany,43.7,32.2,33.2,43.3,42.5,39.5,"40,008",17.0,42%,2021

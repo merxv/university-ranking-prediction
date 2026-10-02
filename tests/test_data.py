@@ -105,3 +105,20 @@ def test_extra_raw_columns_are_ignored(small_raw):
     # The public THE file has additional columns such as female_male_ratio.
     cleaned = clean(small_raw.assign(female_male_ratio="48 : 52"))
     assert "female_male_ratio" not in cleaned.columns
+
+
+def test_load_raw_accepts_uploaded_bytes(sample_path):
+    # The dashboard passes uploaded files as in-memory bytes.
+    import io
+
+    df = load_raw(io.BytesIO(sample_path.read_bytes()))
+    assert len(df) > 0 and "world_rank" in df.columns
+
+
+def test_upload_demo_file_is_valid():
+    from pathlib import Path
+
+    demo = Path(__file__).resolve().parents[1] / "data" / "sample" / "the_rankings_upload_demo.csv"
+    df = load_clean(demo)
+    assert df["university"].nunique() == 60
+    assert sorted(df["year"].unique()) == list(range(2019, 2026))

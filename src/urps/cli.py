@@ -1,9 +1,10 @@
-"""Command-line interface: ``urps generate | run | predict``."""
+"""Command-line interface: ``urps generate | run | predict | app``."""
 
 from __future__ import annotations
 
 import argparse
 import json
+import subprocess
 import sys
 from collections.abc import Sequence
 from pathlib import Path
@@ -42,6 +43,17 @@ def _cmd_predict(args: argparse.Namespace) -> int:
     return 0
 
 
+def _cmd_app(args: argparse.Namespace) -> int:
+    try:
+        import streamlit  # noqa: F401
+    except ImportError:
+        print('error: the dashboard needs extra packages: pip install -e ".[app]"', file=sys.stderr)
+        return 2
+    dashboard = Path(__file__).with_name("dashboard.py")
+    cmd = [sys.executable, "-m", "streamlit", "run", str(dashboard), "--server.port", str(args.port)]
+    return subprocess.call(cmd)
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(prog="urps", description="University Ranking Prediction System")
     parser.add_argument("--version", action="version", version=f"urps {__version__}")
@@ -68,6 +80,10 @@ def build_parser() -> argparse.ArgumentParser:
     pred.add_argument("--university", required=True)
     pred.add_argument("--seed", type=int, default=42)
     pred.set_defaults(func=_cmd_predict)
+
+    app = sub.add_parser("app", help="open the interactive Streamlit dashboard in the browser")
+    app.add_argument("--port", type=int, default=8501)
+    app.set_defaults(func=_cmd_app)
     return parser
 
 
