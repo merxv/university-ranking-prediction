@@ -4,6 +4,15 @@ All notable changes to this project are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and the project uses
 [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Added
+- Streamlit dashboard (`urps app`): trends, next-cycle forecast with what-if sliders, indicator
+  influence, model evaluation, CSV upload and export.
+- `urps.analysis` service layer used by the dashboard (framework-independent, fully tested).
+- Smaller synthetic file `data/sample/the_rankings_upload_demo.csv` for trying the upload.
+- Optional dependency group `app` (streamlit, plotly).
+
 ## [0.1.0] - 2026-09-30
 
 ### Added

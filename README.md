@@ -34,8 +34,30 @@ git clone https://github.com/OWNER/university-ranking-prediction.git
 cd university-ranking-prediction
 python -m venv .venv
 .venv/Scripts/activate            # Windows; `source .venv/bin/activate` on Linux/macOS
-pip install -e . -c constraints.txt
+pip install -e ".[app]" -c constraints.txt
 ```
+
+### Interactive dashboard
+
+```bash
+urps app
+```
+
+This opens <http://localhost:8501> with four tabs:
+
+| Tab | What you can do | User story |
+|-----|-----------------|------------|
+| Trends | Compare universities over the years by overall score or any indicator | US1, FR6, FR11 |
+| Forecast & what-if | Next-cycle score, 90% interval and rank; move sliders to change this year's indicators and see the effect | US2, FR5, FR9 |
+| Indicator influence | Which indicators drive the prediction (permutation importance) | US3, FR8 |
+| Model evaluation | MAE / RMSE / R² of all models on the held-out year, predicted vs actual, CSV export | FR7, FR10 |
+
+The sidebar switches between the built-in synthetic sample and **your own CSV upload**
+(try `data/sample/the_rankings_upload_demo.csv`, or real data, see [Data](#data)).
+
+![Dashboard](docs/figures/dashboard.png)
+
+### Command line
 
 Run the whole pipeline on the committed sample:
 
@@ -92,15 +114,25 @@ by `urps.synthetic`. It copies the column layout and the formatting problems of 
 Education data, but no real ranking data is redistributed. Metrics above therefore show that the
 pipeline works; they say nothing about how predictable real rankings are.
 
-To use real data, put a CSV with the THE column layout (`world_rank, university_name, country,
-teaching, international, research, citations, income, total_score, num_students,
-student_staff_ratio, international_students, year`; extra columns are ignored) into `data/raw/`
-(git-ignored) and run `urps run --data data/raw/<file>.csv`. Respect the terms of use of the data source.
+`data/sample/the_rankings_upload_demo.csv` is a smaller synthetic file (60 universities, 2019–2025)
+for trying the upload feature of the dashboard.
+
+**Real data.** The public Kaggle dataset
+[World University Rankings](https://www.kaggle.com/datasets/mylesoneill/world-university-rankings)
+(Times Higher Education 2011–2016) has a file `timesData.csv` with the expected layout. A free Kaggle
+account is needed to download it. Put the file into `data/raw/` (git-ignored) and either upload it in
+the dashboard or run `urps run --data data/raw/timesData.csv`. Universities without a published overall
+score (positions below 200 in that file) are dropped automatically. The loader was written for this
+layout but has not been tested on the real file in CI.
+
+Any CSV with the columns `world_rank, university_name, country, teaching, international, research,
+citations, income, total_score, num_students, student_staff_ratio, international_students, year`
+works; extra columns are ignored. Respect the terms of use of the data source.
 
 ## Project structure
 
 ```
-├── src/urps/            # package: data, schema, features, model, pipeline, viz, cli, synthetic
+├── src/urps/            # package: data, schema, features, model, pipeline, analysis, dashboard, viz, cli, synthetic
 ├── tests/               # pytest suite + reference metrics for the regression test
 ├── data/sample/         # synthetic sample used by tests and CI
 ├── docs/                # technology justification and figures
@@ -112,11 +144,11 @@ student_staff_ratio, international_students, year`; extra columns are ignored) i
 ## Testing
 
 ```bash
-pip install -e ".[dev]" -c constraints.txt
+pip install -e ".[dev,app]" -c constraints.txt
 pytest
 ```
 
-The suite (75+ tests, coverage gate 80%, currently ~99%) contains:
+The suite (89 tests, coverage gate 80%, currently ~99%) contains:
 
 - **unit tests** for parsers and cleaning (tied ranks, bands, separators, name variants, duplicates);
 - **schema tests**: out-of-range, missing target, duplicates and unexpected columns are rejected;
@@ -124,6 +156,8 @@ The suite (75+ tests, coverage gate 80%, currently ~99%) contains:
 - **property-based tests** (Hypothesis): parser round-trips, rank labels are monotonic in score;
 - **regression test**: metrics must stay within tolerance of `tests/data/reference_metrics.json`;
 - **reproducibility test**: two runs with the same seed give identical metrics;
+- **service tests** for forecasts and what-if scenarios;
+- **dashboard smoke tests** with Streamlit's headless `AppTest` (renders, slider updates the scenario);
 - **CLI tests** and doctests.
 
 ## CI/CD
@@ -138,8 +172,8 @@ The suite (75+ tests, coverage gate 80%, currently ~99%) contains:
 
 ## Technology choices
 
-Python 3.11+, pandas, scikit-learn, pandera, matplotlib, pytest + Hypothesis, ruff, mypy, GitHub
-Actions. The reasoning (weighted decision matrix, alternatives considered) is in
+Python 3.11+, pandas, scikit-learn, pandera, matplotlib, Streamlit + Plotly, pytest + Hypothesis,
+ruff, mypy, GitHub Actions. The reasoning (weighted decision matrix, alternatives considered) is in
 [docs/technology-justification.md](docs/technology-justification.md).
 
 ## Limitations
@@ -148,7 +182,7 @@ Actions. The reasoning (weighted decision matrix, alternatives considered) is in
 - Permutation importance of the linear model is inflated by strongly correlated features
   (e.g. last year's score and its historical mean); read it as a ranking of influence, not as effect sizes.
 - The 90% interval is estimated from one held-out calibration year and is approximate.
-- Not included yet (planned in the architecture of Assignment 2): Streamlit dashboard, MLflow tracking, DVC.
+- Not included yet (planned in the architecture of Assignment 2): MLflow tracking, DVC.
 
 ## Citation and licence
 
