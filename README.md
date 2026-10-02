@@ -21,7 +21,7 @@ Software Development course, building on the project charter, plan (Assignment 1
 | Merge name variants, drop duplicates and rows without an overall score | `urps.data` | FR2 |
 | Validate the cleaned table against a declarative schema; stop on violation | `urps.schema` | NFR7 |
 | Build features **only from year t-1**: lags, yearly change, 3-year trend, historical mean | `urps.features` | FR3 |
-| Train a persistence baseline, linear regression and gradient boosting; temporal split | `urps.model` | FR4 |
+| Express scores relative to their year's average; train a persistence baseline, ridge regression and gradient boosting; temporal split | `urps.features`, `urps.model` | FR4 |
 | Report MAE, RMSE, R², R² of yearly change, 90% interval coverage; forecast next cycle with rank labels | `urps.pipeline` | FR5, FR7 |
 | Permutation importance and figures | `urps.viz` | FR8, FR6 |
 
@@ -66,11 +66,12 @@ urps run --data data/sample/the_rankings_sample.csv --out reports
 ```
 
 ```
-Test year 2025: best model = linear
-  persistence  MAE=0.962  RMSE=1.179  R2=0.995  R2 of yearly change=-0.003
-  linear       MAE=0.820  RMSE=1.008  R2=0.996  R2 of yearly change=+0.266
-  gbm          MAE=0.899  RMSE=1.110  R2=0.996  R2 of yearly change=+0.110
-MAE improvement over persistence baseline: 14.78%
+Test year 2025: best model = ridge
+Common shift of the score scale in the test year: +0.06 (removed)
+  persistence  MAE=0.958  rank error=4.9  Spearman=0.997  R2=0.995  R2 of yearly change=-0.000
+  ridge        MAE=0.816  rank error=4.4  Spearman=0.998  R2=0.996  R2 of yearly change=+0.275
+  gbm          MAE=0.886  rank error=4.6  Spearman=0.998  R2=0.996  R2 of yearly change=+0.140
+MAE improvement over persistence baseline: 14.8%
 ```
 
 > **Why is R² ≈ 0.99 even for the naive baseline?** Scores differ far more *between* universities
@@ -78,8 +79,27 @@ MAE improvement over persistence baseline: 14.78%
 > with predicting the average score of all universities, so simply repeating last year's score already
 > gives R² = 0.995. This is not leakage (see the leakage tests), but it means level R² says little about
 > skill. The pipeline therefore also reports **R² of yearly change**: the share of the actual
-> year-over-year change the model explains. The baseline scores ≈ 0 by construction; the linear model
-> explains about 27% of the change, which is the honest measure of what it adds.
+> year-over-year change the model explains. The baseline scores ≈ 0 by construction; the ridge model
+> explains about 27% of the change, which is the honest measure of what it adds. **Rank error** (how
+> many places a predicted position is off) and **Spearman** correlation measure what users care about.
+
+### Results on real data
+
+On the public Times Higher Education data 2011–2016 (`timesData.csv`, see [Data](#data)):
+
+| Test year | Common scale shift | Persistence MAE / rank error | Best model | Best MAE / rank error |
+|-----------|-------------------:|-----------------------------:|------------|----------------------:|
+| 2014 | −3.84 | 1.91 / 9.8 | persistence | — |
+| 2015 | +1.21 | 1.24 / 7.7 | persistence | — |
+| 2016 | +3.58 | 3.23 / 17.5 | ridge | 3.18 / 17.2 |
+
+Two lessons came from the real data. First, THE rescales scores between editions (and changed its
+methodology in 2016), shifting the **whole scale** by up to ±4 points. That shift is unpredictable and
+does not change anyone's position, so all scores are modeled **relative to the average of their year**;
+without this, every model was worse than the naive forecast (MAE 4.4–5.4 in 2016). Second, with about
+180 universities per year and only five year-to-year transitions, positions are so stable that the
+naive *same position as last year* forecast is very hard to beat. The pipeline therefore lets the
+baseline compete: when no model beats it on the held-out year, forecasts use it, and the dashboard says so.
 
 Forecast one university for the next, unpublished cycle:
 
@@ -91,10 +111,10 @@ urps predict --data data/sample/the_rankings_sample.csv --university "National F
 {
   "university": "National Fairhaven University",
   "year": 2026,
-  "predicted_score": 99.18,
-  "interval_90": [97.5, 100.0],
+  "predicted_score": 99.05,
+  "interval_90": [97.43, 100.0],
   "predicted_rank": "1",
-  "model": "linear",
+  "model": "ridge",
   "note": "Estimate based on public indicators, not a guarantee of the actual ranking."
 }
 ```
@@ -187,7 +207,7 @@ ruff, mypy, GitHub Actions. The reasoning (weighted decision matrix, alternative
 ## Limitations
 
 - The sample data is synthetic; real ranking methodologies change over time and need per-source normalisation.
-- Permutation importance of the linear model is inflated by strongly correlated features
+- Permutation importance is shared between strongly correlated features
   (e.g. last year's score and its historical mean); read it as a ranking of influence, not as effect sizes.
 - The 90% interval is estimated from one held-out calibration year and is approximate.
 - Not included yet (planned in the architecture of Assignment 2): MLflow tracking, DVC.

@@ -14,8 +14,16 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and 
 - Optional dependency group `app` (streamlit, plotly).
 - Metric `r2_change` (R² of the predicted year-over-year change) in CLI, reports, dashboard and the
   CI quality gate, because level R² is near 1 even for the naive baseline.
+- Rank metrics: mean rank error and Spearman correlation.
+- Year-shift invariance test: moving every score of one year by a constant changes no feature or target.
 
 ### Changed
+- Scores are modeled relative to the average of their ranking year. On the real THE data the whole
+  scale moves by up to ±4 points between editions, which made every model worse than the naive forecast.
+- Plain linear regression replaced by ridge regression (`ridge`), which does not overfit on ~180
+  universities per year.
+- The naive baseline now competes in model selection; if no model beats it, forecasts use it and the
+  dashboard explains why.
 - Trends tab: universities are chosen with checkboxes in a searchable table instead of a multiselect
   dropdown that stayed open while picking; at most 8 lines are drawn.
 
