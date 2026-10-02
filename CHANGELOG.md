@@ -12,6 +12,12 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and 
 - `urps.analysis` service layer used by the dashboard (framework-independent, fully tested).
 - Smaller synthetic file `data/sample/the_rankings_upload_demo.csv` for trying the upload.
 - Optional dependency group `app` (streamlit, plotly).
+- Metric `r2_change` (R² of the predicted year-over-year change) in CLI, reports, dashboard and the
+  CI quality gate, because level R² is near 1 even for the naive baseline.
+
+### Changed
+- Trends tab: universities are chosen with checkboxes in a searchable table instead of a multiselect
+  dropdown that stayed open while picking; at most 8 lines are drawn.
 
 ## [0.1.0] - 2026-09-30
 
