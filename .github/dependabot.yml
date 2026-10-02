@@ -1,10 +1,13 @@
 version: 2
 updates:
+  # Keep the versions of GitHub Actions used in the workflows up to date.
   - package-ecosystem: github-actions
     directory: /
     schedule:
       interval: monthly
-  - package-ecosystem: pip
-    directory: /
-    schedule:
-      interval: monthly
+
+# Python packages are deliberately not updated by Dependabot: constraints.txt is a
+# complete `pip freeze` of mutually compatible versions (e.g. pydantic pins an exact
+# pydantic-core, streamlit requires websockets<17). Bumping one pin at a time produces
+# unsatisfiable sets that fail CI. Refresh the whole file at once instead:
+#   pip install -U -e ".[dev,app]" && pip freeze --exclude-editable > constraints.txt
