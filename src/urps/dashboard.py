@@ -17,6 +17,8 @@ from urps.analysis import INDICATOR_LABELS, NOTE, Bundle, build_bundle, feature_
 from urps.data import PILLARS, clean, load_raw
 from urps.synthetic import generate_the_table
 
+MAX_COMPARE = 8  # more lines than this make the trend chart unreadable
+
 
 @st.cache_data(show_spinner="Cleaning and validating data...")
 def load_from_bytes(content: bytes) -> pd.DataFrame:
@@ -58,21 +60,51 @@ def sidebar() -> tuple[pd.DataFrame, str] | None:
 
 def tab_trends(df: pd.DataFrame) -> None:
     st.subheader("Historical ranking trends (US1)")
-    latest = df[df["year"] == df["year"].max()].sort_values("total_score", ascending=False)
-    universities = sorted(df["university"].unique())
-    chosen = st.multiselect("Universities", universities, default=latest["university"].head(3).tolist())
-    indicator = st.selectbox(
-        "Indicator", list(INDICATOR_LABELS), format_func=lambda c: INDICATOR_LABELS[c], key="trend_indicator"
+    latest_year = int(df["year"].max())
+    latest = (
+        df[df["year"] == latest_year]
+        .sort_values("total_score", ascending=False)[["university", "country", "total_score"]]
+        .rename(columns={"total_score": f"score {latest_year}"})
+        .reset_index(drop=True)
     )
-    if not chosen:
-        st.warning("Select at least one university.")
-        return
-    data = df[df["university"].isin(chosen)].sort_values("year")
-    fig = px.line(
-        data, x="year", y=indicator, color="university", markers=True, labels={indicator: INDICATOR_LABELS[indicator]}
-    )
-    fig.update_layout(xaxis=dict(dtick=1), legend_title_text="")
-    st.plotly_chart(fig, width="stretch")
+
+    # A table with row checkboxes instead of a multiselect: with hundreds of universities a dropdown
+    # stays open while picking and is hard to dismiss; the table also shows who is at the top.
+    left, right = st.columns([2, 3])
+    with left:
+        st.caption(f"Tick up to {MAX_COMPARE} universities. Use the search icon in the table toolbar to find one.")
+        event = st.dataframe(
+            latest,
+            hide_index=True,
+            height=420,
+            on_select="rerun",
+            selection_mode="multi-row",
+            selection_default={"selection": {"rows": [0, 1, 2]}},
+            key="trend_select",
+        )
+    rows = list(event.selection.rows)
+    chosen = latest.loc[rows, "university"].tolist()
+    with right:
+        indicator = st.selectbox(
+            "Indicator", list(INDICATOR_LABELS), format_func=lambda c: INDICATOR_LABELS[c], key="trend_indicator"
+        )
+        if not chosen:
+            st.info("Tick at least one university in the table.")
+            return
+        if len(chosen) > MAX_COMPARE:
+            st.warning(f"Showing the first {MAX_COMPARE} of {len(chosen)} selected universities.")
+            chosen = chosen[:MAX_COMPARE]
+        data = df[df["university"].isin(chosen)].sort_values("year")
+        fig = px.line(
+            data,
+            x="year",
+            y=indicator,
+            color="university",
+            markers=True,
+            labels={indicator: INDICATOR_LABELS[indicator]},
+        )
+        fig.update_layout(xaxis=dict(dtick=1), legend=dict(orientation="h", y=-0.25, title_text=""))
+        st.plotly_chart(fig, width="stretch")
 
     table = data.assign(
         world_rank=data.apply(
@@ -82,7 +114,7 @@ def tab_trends(df: pd.DataFrame) -> None:
             axis=1,
         )
     )[["university", "year", "world_rank", "total_score", *PILLARS]]
-    st.dataframe(table, hide_index=True, width="stretch")
+    st.dataframe(table, hide_index=True, width="stretch", placeholder="-")
 
 
 def tab_forecast(bundle: Bundle) -> None:
@@ -160,15 +192,27 @@ def tab_influence(bundle: Bundle) -> None:
 
 def tab_evaluation(bundle: Bundle) -> None:
     st.subheader(f"Model evaluation on the held-out year {bundle.test_year}")
-    metrics = pd.DataFrame(bundle.metrics).T.rename(columns={"mae": "MAE", "rmse": "RMSE", "r2": "R²"})
+    metrics = pd.DataFrame(bundle.metrics).T.rename(
+        columns={"mae": "MAE", "rmse": "RMSE", "r2": "R² (score level)", "r2_change": "R² of yearly change"}
+    )
     metrics.index.name = "model"
     st.dataframe(metrics, width="stretch")
     base = bundle.metrics["persistence"]["mae"]
     best_mae = metrics["MAE"].drop("persistence").min()
+    best_change = metrics["R² of yearly change"].drop("persistence").max()
     st.caption(
         f"Persistence = 'same score as last year'. The selected model improves MAE by "
         f"{100 * (base - best_mae) / base:.1f}% over it. Training uses only years before {bundle.test_year}."
     )
+    with st.expander("Why is R² of the score level so close to 1?"):
+        st.markdown(
+            "Scores differ far more **between** universities (tens of points) than **from one year to the next** "
+            "(about one point). R² compares the model with predicting the average score of all universities, "
+            "so even the naive *same as last year* forecast reaches R² ≈ 0.99. It says little about skill.\n\n"
+            "**R² of yearly change** is the honest measure: it is the share of the actual year-over-year change "
+            f"that the model explains. The persistence baseline gets ≈ 0 by construction; the best model gets "
+            f"**{best_change:.2f}**. Year-to-year movements are mostly noise, so modest values are expected."
+        )
     tp = bundle.test_predictions
     fig = px.scatter(
         tp,

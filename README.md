@@ -22,7 +22,7 @@ Software Development course, building on the project charter, plan (Assignment 1
 | Validate the cleaned table against a declarative schema; stop on violation | `urps.schema` | NFR7 |
 | Build features **only from year t-1**: lags, yearly change, 3-year trend, historical mean | `urps.features` | FR3 |
 | Train a persistence baseline, linear regression and gradient boosting; temporal split | `urps.model` | FR4 |
-| Report MAE, RMSE, R², 90% interval coverage; forecast next cycle with rank labels | `urps.pipeline` | FR5, FR7 |
+| Report MAE, RMSE, R², R² of yearly change, 90% interval coverage; forecast next cycle with rank labels | `urps.pipeline` | FR5, FR7 |
 | Permutation importance and figures | `urps.viz` | FR8, FR6 |
 
 User stories covered: US1 (trend plots), US2 (next-cycle forecast), US3 (indicator influence).
@@ -67,11 +67,19 @@ urps run --data data/sample/the_rankings_sample.csv --out reports
 
 ```
 Test year 2025: best model = linear
-  persistence  MAE=0.962  RMSE=1.179  R2=0.995
-  linear       MAE=0.820  RMSE=1.008  R2=0.996
-  gbm          MAE=0.899  RMSE=1.110  R2=0.996
+  persistence  MAE=0.962  RMSE=1.179  R2=0.995  R2 of yearly change=-0.003
+  linear       MAE=0.820  RMSE=1.008  R2=0.996  R2 of yearly change=+0.266
+  gbm          MAE=0.899  RMSE=1.110  R2=0.996  R2 of yearly change=+0.110
 MAE improvement over persistence baseline: 14.78%
 ```
+
+> **Why is R² ≈ 0.99 even for the naive baseline?** Scores differ far more *between* universities
+> (standard deviation ≈ 17 points) than *from one year to the next* (≈ 1 point). R² compares a model
+> with predicting the average score of all universities, so simply repeating last year's score already
+> gives R² = 0.995. This is not leakage (see the leakage tests), but it means level R² says little about
+> skill. The pipeline therefore also reports **R² of yearly change**: the share of the actual
+> year-over-year change the model explains. The baseline scores ≈ 0 by construction; the linear model
+> explains about 27% of the change, which is the honest measure of what it adds.
 
 Forecast one university for the next, unpublished cycle:
 
@@ -148,7 +156,7 @@ pip install -e ".[dev,app]" -c constraints.txt
 pytest
 ```
 
-The suite (89 tests, coverage gate 80%, currently ~99%) contains:
+The suite (92 tests, coverage gate 80%, currently ~99%) contains:
 
 - **unit tests** for parsers and cleaning (tied ranks, bands, separators, name variants, duplicates);
 - **schema tests**: out-of-range, missing target, duplicates and unexpected columns are rejected;
@@ -164,7 +172,7 @@ The suite (89 tests, coverage gate 80%, currently ~99%) contains:
 
 | Workflow | Trigger | Stages |
 |----------|---------|--------|
-| [`ci.yml`](.github/workflows/ci.yml) | push to `main`, every pull request | **quality** (ruff lint + format, mypy) → **test** (Ubuntu/Windows × Python 3.11/3.12, coverage) → **smoke** (full pipeline on the sample, quality gate R² ≥ 0.85 and beats baseline, reports uploaded as artifact) |
+| [`ci.yml`](.github/workflows/ci.yml) | push to `main`, every pull request | **quality** (ruff lint + format, mypy) → **test** (Ubuntu/Windows × Python 3.11/3.12, coverage) → **smoke** (full pipeline on the sample; quality gate: R² ≥ 0.85, explains part of the yearly change, beats the baseline; reports uploaded as artifact) |
 | [`release.yml`](.github/workflows/release.yml) | tag `v*` | tag = package version check → tests → build sdist/wheel → GitHub Release with packages and reports |
 
 `main` is protected: changes arrive through pull requests with green checks (GitHub Flow, see

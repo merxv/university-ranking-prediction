@@ -48,3 +48,9 @@ def test_app_command_starts_streamlit(monkeypatch):
     assert main(["app", "--port", "8600"]) == 0
     assert calls[0][1:4] == ["-m", "streamlit", "run"]
     assert calls[0][-1] == "8600"
+
+
+def test_trends_table_preselects_top_three(app):
+    assert not app.exception
+    assert not app.warning
+    assert any("Tick up to" in c.value for c in app.caption)

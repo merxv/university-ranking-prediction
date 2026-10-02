@@ -66,7 +66,7 @@ def build_bundle(clean: pd.DataFrame, seed: int = 42) -> Bundle:
     for name in MODEL_NAMES:
         trained[name] = fit_model(name, train, seed=seed)
         pred = trained[name].predict(test)["predicted_score"].to_numpy()
-        metrics[name] = evaluate(test[TARGET], pred)
+        metrics[name] = evaluate(test[TARGET], pred, test["lag1_total_score"])
 
     best = min((n for n in MODEL_NAMES if n != "persistence"), key=lambda n: metrics[n]["mae"])
     test_predictions = test[["university", "year", TARGET]].join(trained[best].predict(test))

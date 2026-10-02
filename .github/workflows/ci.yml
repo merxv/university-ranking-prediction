@@ -94,6 +94,8 @@ jobs:
           best = r["metrics"][r["best_model"]]
           print(json.dumps(r["metrics"], indent=2))
           assert best["r2"] >= 0.85, f"R2 below target: {best['r2']}"
+          # Level R2 is high even for "same as last year"; require skill on the yearly change too.
+          assert best["r2_change"] > 0, f"model explains none of the yearly change: {best['r2_change']}"
           assert r["mae_improvement_over_persistence_pct"] > 0, "model does not beat the naive baseline"
           EOF
       - name: Forecast one university

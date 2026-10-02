@@ -66,3 +66,11 @@ def test_rank_band_labels():
     assert labels == ["1", "2", "2", "1-50"]
     many = rank_band(np.linspace(100, 0, 260))
     assert many[0] == "1" and many[199] == "200" and many[200] == "201-250" and many[-1] == "251-300"
+
+
+def test_r2_change_is_zero_for_persistence_and_one_for_perfect():
+    last = np.array([50.0, 60.0, 70.0, 80.0])
+    actual = np.array([51.0, 59.0, 72.0, 79.0])
+    assert evaluate(actual, last, last)["r2_change"] <= 0.0  # predicts "no change"
+    assert evaluate(actual, actual, last)["r2_change"] == 1.0
+    assert "r2_change" not in evaluate(actual, last)
