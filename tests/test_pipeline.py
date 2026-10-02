@@ -66,3 +66,12 @@ def test_forecast_university_is_labelled_as_estimate(sample_path, sample_univers
 def test_forecast_unknown_university(sample_path):
     with pytest.raises(ValueError, match="not found"):
         forecast_university(sample_path, "Hogwarts")
+
+
+def test_level_r2_overstates_skill_compared_with_change_r2(result):
+    """The naive baseline already has a high level R² but no skill on the yearly change."""
+    res, _ = result
+    m = res["metrics"]
+    assert m["persistence"]["r2"] > 0.98
+    assert abs(m["persistence"]["r2_change"]) < 0.05
+    assert m[res["best_model"]]["r2_change"] > 0.1

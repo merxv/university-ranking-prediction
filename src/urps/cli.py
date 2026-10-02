@@ -30,7 +30,10 @@ def _cmd_run(args: argparse.Namespace) -> int:
     best = result["best_model"]
     print(f"Test year {result['test_year']}: best model = {best}")
     for name, m in result["metrics"].items():
-        print(f"  {name:<12} MAE={m['mae']:.3f}  RMSE={m['rmse']:.3f}  R2={m['r2']:.3f}")
+        print(
+            f"  {name:<12} MAE={m['mae']:.3f}  RMSE={m['rmse']:.3f}  R2={m['r2']:.3f}"
+            f"  R2 of yearly change={m['r2_change']:+.3f}"
+        )
     print(f"MAE improvement over persistence baseline: {result['mae_improvement_over_persistence_pct']}%")
     print(f"Reports written to {args.out}")
     return 0

@@ -56,13 +56,30 @@ def temporal_split(features: pd.DataFrame, test_year: int) -> tuple[pd.DataFrame
     return train, test
 
 
-def evaluate(y_true: pd.Series | np.ndarray, y_pred: np.ndarray) -> dict[str, float]:
-    """Return MAE, RMSE and R² rounded to 4 decimals."""
-    return {
-        "mae": round(float(mean_absolute_error(y_true, y_pred)), 4),
-        "rmse": round(float(np.sqrt(mean_squared_error(y_true, y_pred))), 4),
-        "r2": round(float(r2_score(y_true, y_pred)), 4),
+def evaluate(
+    y_true: pd.Series | np.ndarray,
+    y_pred: np.ndarray,
+    last_year: pd.Series | np.ndarray | None = None,
+) -> dict[str, float]:
+    """Return MAE, RMSE and R² rounded to 4 decimals.
+
+    Scores differ far more *between* universities than from one year to the next,
+    so R² of the score level is close to 1 even for the naive "same as last year"
+    forecast. When ``last_year`` scores are given, ``r2_change`` is added: R² of the
+    predicted year-over-year change, i.e. the share of the actual change the model
+    explains. The persistence baseline scores about 0 on it by construction.
+    """
+    y_true_arr = np.asarray(y_true, dtype=float)
+    y_pred_arr = np.asarray(y_pred, dtype=float)
+    metrics = {
+        "mae": round(float(mean_absolute_error(y_true_arr, y_pred_arr)), 4),
+        "rmse": round(float(np.sqrt(mean_squared_error(y_true_arr, y_pred_arr))), 4),
+        "r2": round(float(r2_score(y_true_arr, y_pred_arr)), 4),
     }
+    if last_year is not None:
+        prev = np.asarray(last_year, dtype=float)
+        metrics["r2_change"] = round(float(r2_score(y_true_arr - prev, y_pred_arr - prev)), 4)
+    return metrics
 
 
 @dataclass

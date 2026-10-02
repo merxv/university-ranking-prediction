@@ -43,7 +43,7 @@ def run_experiment(
     for name in MODEL_NAMES:
         model = fit_model(name, train, seed=seed)
         pred = model.predict(test)
-        m = evaluate(test[TARGET], pred["predicted_score"].to_numpy())
+        m = evaluate(test[TARGET], pred["predicted_score"].to_numpy(), test["lag1_total_score"])
         inside = (test[TARGET] >= pred["lower"]) & (test[TARGET] <= pred["upper"])
         m["interval_coverage"] = round(float(inside.mean()), 4)
         metrics[name] = m
