@@ -175,6 +175,12 @@ def tab_forecast(bundle: Bundle) -> None:
 
 def tab_influence(bundle: Bundle) -> None:
     st.subheader("Indicator influence (US3)")
+    if bundle.model.name == "persistence":
+        st.info(
+            "No model beat the naive forecast on the held-out year, so the forecast simply repeats each "
+            "university's position from last year and no indicator influence can be estimated."
+        )
+        return
     top = bundle.importance.head(12).rename(index=feature_label).sort_values()
     fig = px.bar(
         x=top.values,
@@ -193,25 +199,41 @@ def tab_influence(bundle: Bundle) -> None:
 def tab_evaluation(bundle: Bundle) -> None:
     st.subheader(f"Model evaluation on the held-out year {bundle.test_year}")
     metrics = pd.DataFrame(bundle.metrics).T.rename(
-        columns={"mae": "MAE", "rmse": "RMSE", "r2": "R² (score level)", "r2_change": "R² of yearly change"}
-    )
+        columns={
+            "mae": "MAE",
+            "rmse": "RMSE",
+            "r2": "R²",
+            "r2_change": "R² of yearly change",
+            "rank_mae": "Mean rank error",
+            "spearman": "Rank correlation",
+        }
+    )[["MAE", "RMSE", "Mean rank error", "Rank correlation", "R²", "R² of yearly change"]]
     metrics.index.name = "model"
     st.dataframe(metrics, width="stretch")
+    best = bundle.model.name
     base = bundle.metrics["persistence"]["mae"]
-    best_mae = metrics["MAE"].drop("persistence").min()
-    best_change = metrics["R² of yearly change"].drop("persistence").max()
-    st.caption(
-        f"Persistence = 'same score as last year'. The selected model improves MAE by "
-        f"{100 * (base - best_mae) / base:.1f}% over it. Training uses only years before {bundle.test_year}."
-    )
-    with st.expander("Why is R² of the score level so close to 1?"):
+    if best == "persistence":
+        st.warning(
+            "No model beat the naive forecast ('same position as last year') on the held-out year, so the "
+            "dashboard uses the naive forecast. This is common with few ranking years: positions are very stable "
+            "and the remaining changes are mostly noise or methodology changes."
+        )
+    else:
+        st.caption(
+            f"Selected model: **{best}**. It improves MAE by {100 * (base - bundle.metrics[best]['mae']) / base:.1f}% "
+            f"over the naive forecast ('same position as last year'). Training uses only years before "
+            f"{bundle.test_year}."
+        )
+    with st.expander("How to read these numbers"):
         st.markdown(
-            "Scores differ far more **between** universities (tens of points) than **from one year to the next** "
-            "(about one point). R² compares the model with predicting the average score of all universities, "
-            "so even the naive *same as last year* forecast reaches R² ≈ 0.99. It says little about skill.\n\n"
-            "**R² of yearly change** is the honest measure: it is the share of the actual year-over-year change "
-            f"that the model explains. The persistence baseline gets ≈ 0 by construction; the best model gets "
-            f"**{best_change:.2f}**. Year-to-year movements are mostly noise, so modest values are expected."
+            "All scores are measured **relative to the average of their ranking year**. Ranking agencies rescale "
+            "scores between editions, which moves the whole scale by several points; that shift is unpredictable "
+            "and does not change anyone's position, so it is removed before training and evaluation.\n\n"
+            "**Mean rank error** is how many places the predicted position is off on average; **rank "
+            "correlation** (Spearman) compares the predicted and actual order.\n\n"
+            "**R²** is close to 1 even for the naive forecast, because universities differ far more from each "
+            "other than from one year to the next. **R² of yearly change** is the share of the actual change "
+            "that a model explains: about 0 for the naive forecast, negative when a model is worse than it."
         )
     tp = bundle.test_predictions
     fig = px.scatter(
@@ -219,7 +241,10 @@ def tab_evaluation(bundle: Bundle) -> None:
         x="target",
         y="predicted_score",
         hover_name="university",
-        labels={"target": "Actual overall score", "predicted_score": "Predicted overall score"},
+        labels={
+            "target": "Actual score (relative to year average)",
+            "predicted_score": "Predicted score (relative to year average)",
+        },
     )
     lo, hi = float(tp["target"].min()), float(tp["target"].max())
     fig.add_shape(type="line", x0=lo, y0=lo, x1=hi, y1=hi, line=dict(dash="dash", color="grey"))
