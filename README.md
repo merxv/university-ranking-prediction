@@ -1,6 +1,6 @@
 # University Ranking Prediction System (URPS)
 
-[![CI](https://github.com/OWNER/university-ranking-prediction/actions/workflows/ci.yml/badge.svg)](https://github.com/OWNER/university-ranking-prediction/actions/workflows/ci.yml)
+[![CI](https://github.com/merxv/university-ranking-prediction/actions/workflows/ci.yml/badge.svg)](https://github.com/merxv/university-ranking-prediction/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 ![Python](https://img.shields.io/badge/python-3.11%20%7C%203.12-blue)
 
@@ -30,7 +30,7 @@ User stories covered: US1 (trend plots), US2 (next-cycle forecast), US3 (indicat
 ## Quick start
 
 ```bash
-git clone https://github.com/OWNER/university-ranking-prediction.git
+git clone https://github.com/merxv/university-ranking-prediction.git
 cd university-ranking-prediction
 python -m venv .venv
 .venv/Scripts/activate            # Windows; `source .venv/bin/activate` on Linux/macOS
