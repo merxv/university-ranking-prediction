@@ -1,6 +1,8 @@
+import pandas as pd
 import pytest
 
-from urps.features import FEATURES, TARGET, build_features, future_features
+from urps.data import PILLARS
+from urps.features import FEATURES, TARGET, build_features, future_features, relative_to_year
 
 
 @pytest.fixture(scope="module")
@@ -19,8 +21,8 @@ def test_no_missing_lag1_values(feats):
 
 
 def test_lag_features_come_from_previous_year(feats, small_clean):
-    """Leakage test: lag1 values equal the published values of year t-1, target equals year t."""
-    ref = small_clean.set_index(["university", "year"])
+    """Leakage test: lag1 values equal the (year-relative) values of year t-1, target equals year t."""
+    ref = relative_to_year(small_clean).set_index(["university", "year"])
     for _, row in feats.sample(25, random_state=0).iterrows():
         prev = ref.loc[(row["university"], row["year"] - 1)]
         cur = ref.loc[(row["university"], row["year"])]
@@ -38,7 +40,8 @@ def test_features_do_not_contain_current_year_values(feats, small_clean):
 def test_history_mean_uses_only_past_years(feats, small_clean):
     uni = feats["university"].iloc[0]
     row = feats[(feats["university"] == uni)].sort_values("year").iloc[-1]
-    past = small_clean[(small_clean["university"] == uni) & (small_clean["year"] < row["year"])]
+    rel = relative_to_year(small_clean)
+    past = rel[(rel["university"] == uni) & (rel["year"] < row["year"])]
     assert row["histmean_total_score"] == pytest.approx(past["total_score"].mean())
 
 
@@ -57,3 +60,29 @@ def test_future_features_target_next_year(small_clean):
     assert (fut["year"] == small_clean["year"].max() + 1).all()
     assert len(fut) == 40
     assert TARGET not in fut.columns
+
+
+def test_relative_scores_have_zero_mean_per_year(small_clean):
+    rel = relative_to_year(small_clean)
+    means = rel.groupby("year")[[*PILLARS, "total_score"]].mean()
+    assert means.abs().max().max() < 1e-9
+
+
+def test_common_shift_of_a_year_does_not_change_features_or_target(small_clean):
+    """A methodology change that moves every score of one year by the same amount is not predictable
+    and does not change anyone's position, so features and targets must be unaffected by it."""
+    shifted = small_clean.copy()
+    in_2019 = shifted["year"] == 2019
+    for col in [*PILLARS, "total_score"]:
+        shifted.loc[in_2019, col] = shifted.loc[in_2019, col] + 7.5
+    a, b = build_features(small_clean), build_features(shifted)
+    cols = [*FEATURES, TARGET]
+    pd.testing.assert_frame_equal(a[cols], b[cols], check_exact=False, atol=1e-9)
+    # ...while the yearly averages, used to convert back to the published scale, record the shift
+    assert (b.loc[b["year"] == 2019, "year_mean"] - a.loc[a["year"] == 2019, "year_mean"]).iloc[0] == pytest.approx(7.5)
+
+
+def test_future_features_carry_latest_year_mean(small_clean):
+    fut = future_features(small_clean)
+    latest = small_clean.loc[small_clean["year"] == small_clean["year"].max(), "total_score"].mean()
+    assert fut["prev_year_mean"].iloc[0] == pytest.approx(latest)

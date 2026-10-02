@@ -9,19 +9,19 @@ import pandas as pd
 from sklearn.base import BaseEstimator, RegressorMixin
 from sklearn.ensemble import HistGradientBoostingRegressor
 from sklearn.impute import SimpleImputer
-from sklearn.linear_model import LinearRegression
+from sklearn.linear_model import RidgeCV
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
 
 from urps.features import FEATURES, TARGET
 
-MODEL_NAMES: tuple[str, ...] = ("persistence", "linear", "gbm")
+MODEL_NAMES: tuple[str, ...] = ("persistence", "ridge", "gbm")
 INTERVAL_COVERAGE = 0.9
 
 
 class PersistenceRegressor(RegressorMixin, BaseEstimator):
-    """Naive baseline: next year's score equals last year's score."""
+    """Naive baseline: next year's (relative) score equals last year's."""
 
     def fit(self, X: pd.DataFrame, y: pd.Series) -> PersistenceRegressor:
         self.is_fitted_ = True
@@ -35,9 +35,13 @@ def make_estimator(name: str, seed: int = 42) -> BaseEstimator:
     """Create an unfitted estimator by name."""
     if name == "persistence":
         return PersistenceRegressor()
-    if name == "linear":
+    if name == "ridge":
+        # Regularized linear model: a few hundred rows per year and ~30 correlated
+        # features make ordinary least squares overfit badly on real ranking data.
         return make_pipeline(
-            SimpleImputer(strategy="median", keep_empty_features=True), StandardScaler(), LinearRegression()
+            SimpleImputer(strategy="median", keep_empty_features=True),
+            StandardScaler(),
+            RidgeCV(alphas=np.logspace(-2, 3, 20)),
         )
     if name == "gbm":
         return HistGradientBoostingRegressor(
@@ -61,7 +65,11 @@ def evaluate(
     y_pred: np.ndarray,
     last_year: pd.Series | np.ndarray | None = None,
 ) -> dict[str, float]:
-    """Return MAE, RMSE and R² rounded to 4 decimals.
+    """Return MAE, RMSE, R², rank error and Spearman correlation, rounded to 4 decimals.
+
+    ``rank_mae`` is the mean absolute difference between predicted and actual
+    positions within the evaluated cohort, ``spearman`` the rank correlation:
+    the measures closest to what a university wants to know.
 
     Scores differ far more *between* universities than from one year to the next,
     so R² of the score level is close to 1 even for the naive "same as last year"
@@ -76,6 +84,11 @@ def evaluate(
         "rmse": round(float(np.sqrt(mean_squared_error(y_true_arr, y_pred_arr))), 4),
         "r2": round(float(r2_score(y_true_arr, y_pred_arr)), 4),
     }
+    true_rank = pd.Series(y_true_arr).rank(ascending=False)
+    pred_rank = pd.Series(y_pred_arr).rank(ascending=False)
+    metrics["rank_mae"] = round(float((true_rank - pred_rank).abs().mean()), 4)
+    constant = true_rank.nunique() < 2 or pred_rank.nunique() < 2
+    metrics["spearman"] = float("nan") if constant else round(float(true_rank.corr(pred_rank)), 4)
     if last_year is not None:
         prev = np.asarray(last_year, dtype=float)
         metrics["r2_change"] = round(float(r2_score(y_true_arr - prev, y_pred_arr - prev)), 4)
@@ -84,7 +97,10 @@ def evaluate(
 
 @dataclass
 class TrainedModel:
-    """A fitted estimator together with its uncertainty interval half-width."""
+    """A fitted estimator together with its uncertainty interval half-width.
+
+    Predictions are on the year-relative scale; see :func:`to_absolute`.
+    """
 
     name: str
     estimator: BaseEstimator
@@ -93,15 +109,24 @@ class TrainedModel:
     train_years: list[int] = field(default_factory=list)
 
     def predict(self, X: pd.DataFrame) -> pd.DataFrame:
-        pred = np.clip(self.estimator.predict(X[self.features]), 0, 100)
+        pred = np.asarray(self.estimator.predict(X[self.features]), dtype=float)
         return pd.DataFrame(
-            {
-                "predicted_score": pred,
-                "lower": np.clip(pred - self.interval, 0, 100),
-                "upper": np.clip(pred + self.interval, 0, 100),
-            },
+            {"predicted_score": pred, "lower": pred - self.interval, "upper": pred + self.interval},
             index=X.index,
         )
+
+
+def to_absolute(pred: pd.DataFrame, offset: pd.Series | float) -> pd.DataFrame:
+    """Add the yearly average back to relative predictions and clip to the 0-100 scale."""
+    out = pred.copy()
+    for col in ("predicted_score", "lower", "upper"):
+        out[col] = np.clip(out[col] + offset, 0, 100)
+    return out
+
+
+def best_model(metrics: dict[str, dict[str, float]]) -> str:
+    """Lowest MAE wins. The naive baseline competes too: if no model beats it, it is used."""
+    return min(MODEL_NAMES, key=lambda n: (metrics[n]["mae"], n != "persistence"))
 
 
 def usable_features(train: pd.DataFrame) -> list[str]:

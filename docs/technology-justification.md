@@ -31,7 +31,7 @@ Weighted decision matrix (score 1–5):
 |------|--------|-----|------------------------|
 | Tabular data | pandas | De-facto standard; groupby/merge make lag features explicit | Polars (faster, but unnecessary for this data size) |
 | Validation | pandera | Declarative schema in Python; fails fast on bad data (NFR7) | Great Expectations (heavier setup) |
-| Models | scikit-learn | One API for baseline, linear and gradient boosting; built-in permutation importance | XGBoost/LightGBM (extra dependency, no gain on small data) |
+| Models | scikit-learn | One API for baseline, ridge regression and gradient boosting; built-in permutation importance | XGBoost/LightGBM (extra dependency, no gain on small data) |
 | Figures | matplotlib | Static PNGs for reports, no server needed | Plotly (planned for the dashboard) |
 | CLI | argparse (stdlib) | No extra dependency for three sub-commands | Click, Typer |
 | Tests | pytest, pytest-cov, Hypothesis | Fixtures, parametrisation, coverage gate, property-based tests for scientific invariants | unittest |
@@ -40,10 +40,15 @@ Weighted decision matrix (score 1–5):
 | Version control | Git + GitHub | Distributed, standard; issues, PRs, branch protection, free Actions for public repos | GitLab, Bitbucket |
 | CI/CD | GitHub Actions | No infrastructure; integrated with pull requests; OS × Python matrix | GitLab CI, Jenkins |
 
-## An observation from the experiments
+## Observations from the experiments
 
-The architecture of Assignment 2 expected gradient boosting to be the final model. On the sample
-data the **linear model wins** (MAE 0.82 vs 0.90 for gradient boosting and 0.96 for the naive
-baseline). With a few thousand rows and features that are nearly linear in last year's values, a
-simple model generalises better. The pipeline therefore compares candidates and selects the best one
-on a held-out year, instead of hard-coding the model.
+The architecture of Assignment 2 expected gradient boosting to be the final model. On the synthetic
+sample the **regularized linear model (ridge) wins** (MAE 0.82 vs 0.89 for gradient boosting and 0.96
+for the naive baseline): with a few thousand rows and features that are nearly linear in last year's
+values, a simple model generalizes better. Plain least squares was replaced by ridge after it overfit
+badly on the real THE data (about 180 universities per year).
+
+On the real data, scores also had to be expressed relative to their year's average, because THE
+rescales the whole scale between editions, and the naive forecast turned out to be very hard to beat.
+The pipeline therefore compares all candidates, including the baseline, on a held-out year and uses
+the best one instead of hard-coding a model.

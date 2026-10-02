@@ -4,6 +4,13 @@ Anti-leakage rule: a row that predicts the score of year ``t`` may only use
 information published up to year ``t - 1``. Lags are built by joining on
 ``year - 1`` (not by positional shifting), so gaps in a university's history
 never silently pair non-consecutive years.
+
+All scores are first expressed *relative to the average of their ranking year*.
+Ranking agencies rescale scores and change methodology between editions, which
+moves the whole scale up or down by several points (in the public THE data the
+average changes by -3.9 to +3.6 points per year). Such a common shift cannot be
+predicted from history and does not change anyone's position, so models learn
+and predict the relative score; the target year's average is kept separately.
 """
 
 from __future__ import annotations
@@ -13,7 +20,8 @@ import pandas as pd
 
 from urps.data import PILLARS
 
-TARGET = "target"
+TARGET = "target"  # overall score relative to the average of its ranking year
+SCORE_COLUMNS: list[str] = [*PILLARS, "total_score"]
 _LAG_SOURCE = [*PILLARS, "total_score", "student_staff_ratio", "international_students"]
 _DELTA_SOURCE = [*PILLARS, "total_score"]
 
@@ -24,6 +32,19 @@ FEATURES: list[str] = (
     + [f"trend3_{c}" for c in _DELTA_SOURCE]
     + [f"histmean_{c}" for c in _DELTA_SOURCE]
 )
+
+
+def relative_to_year(clean: pd.DataFrame) -> pd.DataFrame:
+    """Subtract the yearly average from every score column (indicators and overall score)."""
+    rel = clean.copy()
+    for col in SCORE_COLUMNS:
+        rel[col] = rel[col] - rel.groupby("year")[col].transform("mean")
+    return rel
+
+
+def year_means(clean: pd.DataFrame) -> pd.Series:
+    """Average overall score per ranking year, used to convert relative scores back."""
+    return clean.groupby("year")["total_score"].mean()
 
 
 def _snapshot(clean: pd.DataFrame, offset: int, prefix: str) -> pd.DataFrame:
@@ -58,18 +79,32 @@ def _assemble(base: pd.DataFrame, clean: pd.DataFrame) -> pd.DataFrame:
 def build_features(clean: pd.DataFrame) -> pd.DataFrame:
     """Build the supervised table: one row per (university, year) with a known target.
 
-    The first observed year of each university is dropped because it has no
-    previous year to learn from.
+    ``target`` is the overall score relative to its year's average; ``year_mean``
+    (average of year ``t``) and ``prev_year_mean`` (year ``t - 1``) allow converting
+    back to the published scale. The first observed year of each university is
+    dropped because it has no previous year to learn from.
     """
-    base = clean[["university", "year", "total_score"]].rename(columns={"total_score": TARGET})
-    df = _assemble(base, clean)
-    return df[["university", "year", *FEATURES, TARGET]].sort_values(["year", "university"]).reset_index(drop=True)
+    rel = relative_to_year(clean)
+    base = rel[["university", "year", "total_score"]].rename(columns={"total_score": TARGET})
+    df = _assemble(base, rel)
+    means = year_means(clean)
+    df["year_mean"] = df["year"].map(means)
+    df["prev_year_mean"] = (df["year"] - 1).map(means)
+    cols = ["university", "year", *FEATURES, TARGET, "year_mean", "prev_year_mean"]
+    return df[cols].sort_values(["year", "university"]).reset_index(drop=True)
 
 
 def future_features(clean: pd.DataFrame) -> pd.DataFrame:
-    """Features for the next, not yet published cycle (``max(year) + 1``)."""
+    """Features for the next, not yet published cycle (``max(year) + 1``).
+
+    ``prev_year_mean`` is the average of the latest published year: the forecast
+    assumes no common shift of the scale, because such shifts are not predictable.
+    """
+    rel = relative_to_year(clean)
     next_year = int(clean["year"].max()) + 1
-    latest = clean.loc[clean["year"] == next_year - 1, ["university"]].copy()
+    latest = rel.loc[rel["year"] == next_year - 1, ["university"]].copy()
     latest["year"] = next_year
-    df = _assemble(latest, clean)
-    return df[["university", "year", *FEATURES]].sort_values("university").reset_index(drop=True)
+    df = _assemble(latest, rel)
+    df["prev_year_mean"] = float(year_means(clean).loc[next_year - 1])
+    cols = ["university", "year", *FEATURES, "prev_year_mean"]
+    return df[cols].sort_values("university").reset_index(drop=True)
