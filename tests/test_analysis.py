@@ -15,7 +15,7 @@ def test_bundle_contents(bundle, small_clean):
     assert len(bundle.forecast) == small_clean["university"].nunique()
     assert (bundle.forecast["year"] == small_clean["year"].max() + 1).all()
     assert bundle.forecast["predicted_score"].is_monotonic_decreasing
-    assert bundle.model.name in ("linear", "gbm")
+    assert bundle.model.name in MODEL_NAMES
     assert not bundle.importance.empty
 
 
@@ -63,3 +63,10 @@ def test_feature_label():
     assert feature_label("trend3_total_score") == "Overall score (3-year trend)"
     assert feature_label("lag1_log_students") == "Log students (last year)"
     assert feature_label("other") == "other"
+
+
+def test_persistence_fallback_has_trivial_importance(small_clean):
+    # On 40 universities no model beats the naive forecast, so it is selected honestly.
+    b = build_bundle(small_clean, seed=1)
+    if b.model.name == "persistence":
+        assert list(b.importance.index) == ["lag1_total_score"]

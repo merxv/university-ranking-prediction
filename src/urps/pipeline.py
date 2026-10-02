@@ -15,11 +15,51 @@ from sklearn.inspection import permutation_importance
 from urps import __version__, viz
 from urps.data import load_clean
 from urps.features import TARGET, build_features, future_features
-from urps.model import MODEL_NAMES, evaluate, fit_model, rank_band, temporal_split
+from urps.model import (
+    MODEL_NAMES,
+    TrainedModel,
+    best_model,
+    evaluate,
+    fit_model,
+    rank_band,
+    temporal_split,
+    to_absolute,
+)
 
 
 def _sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def evaluate_models(
+    feats: pd.DataFrame, test_year: int, seed: int = 42
+) -> tuple[dict[str, dict[str, float]], dict[str, TrainedModel], pd.DataFrame, pd.DataFrame]:
+    """Fit every model on years before ``test_year`` and evaluate it on ``test_year``.
+
+    Metrics are computed on the year-relative scale, i.e. after removing the common
+    shift of the whole ranking scale, which no model can know in advance.
+    """
+    train, test = temporal_split(feats, test_year)
+    metrics: dict[str, dict[str, float]] = {}
+    trained: dict[str, TrainedModel] = {}
+    for name in MODEL_NAMES:
+        model = fit_model(name, train, seed=seed)
+        pred = model.predict(test)
+        m = evaluate(test[TARGET], pred["predicted_score"].to_numpy(), test["lag1_total_score"])
+        inside = (test[TARGET] >= pred["lower"]) & (test[TARGET] <= pred["upper"])
+        m["interval_coverage"] = round(float(inside.mean()), 4)
+        metrics[name] = m
+        trained[name] = model
+    return metrics, trained, train, test
+
+
+def forecast_next_cycle(clean: pd.DataFrame, model: TrainedModel) -> pd.DataFrame:
+    """Forecast every university of the latest year for the next cycle, on the published scale."""
+    future = future_features(clean)
+    relative = model.predict(future)
+    out = future[["university", "year"]].join(to_absolute(relative, future["prev_year_mean"]))
+    out["predicted_rank"] = rank_band(relative["predicted_score"])
+    return out.sort_values("predicted_score", ascending=False).reset_index(drop=True)
 
 
 def run_experiment(
@@ -36,46 +76,44 @@ def run_experiment(
     clean = load_clean(data_path)
     feats = build_features(clean)
     test_year = int(test_year or feats["year"].max())
-    train, test = temporal_split(feats, test_year)
+    metrics, trained, train, test = evaluate_models(feats, test_year, seed)
 
-    metrics: dict[str, dict[str, float]] = {}
-    trained = {}
-    for name in MODEL_NAMES:
-        model = fit_model(name, train, seed=seed)
-        pred = model.predict(test)
-        m = evaluate(test[TARGET], pred["predicted_score"].to_numpy(), test["lag1_total_score"])
-        inside = (test[TARGET] >= pred["lower"]) & (test[TARGET] <= pred["upper"])
-        m["interval_coverage"] = round(float(inside.mean()), 4)
-        metrics[name] = m
-        trained[name] = model
-
-    best = min((n for n in MODEL_NAMES if n != "persistence"), key=lambda n: metrics[n]["mae"])
+    best = best_model(metrics)
     baseline_mae = metrics["persistence"]["mae"]
     improvement = round(100 * (baseline_mae - metrics[best]["mae"]) / baseline_mae, 2)
 
-    # Test-year predictions of the best model.
+    # Test-year predictions of the best model (relative to the year average).
     best_pred = trained[best].predict(test)
-    predictions = test[["university", "year", TARGET]].join(best_pred)
-    predictions["predicted_rank"] = rank_band(predictions["predicted_score"])
+    predictions = pd.DataFrame(
+        {
+            "university": test["university"],
+            "year": test["year"],
+            "actual_relative": test[TARGET],
+            "predicted_relative": best_pred["predicted_score"],
+            "lower": best_pred["lower"],
+            "upper": best_pred["upper"],
+            "actual_rank": rank_band(test[TARGET]),
+            "predicted_rank": rank_band(best_pred["predicted_score"]),
+        }
+    )
     predictions.to_csv(out_dir / "predictions.csv", index=False)
 
     # Forecast of the next, unpublished cycle with the best model refit on all years.
-    final = fit_model(best, feats, seed=seed)
-    future = future_features(clean)
-    forecast = future[["university", "year"]].join(final.predict(future))
-    forecast["predicted_rank"] = rank_band(forecast["predicted_score"])
-    forecast.sort_values("predicted_score", ascending=False).to_csv(out_dir / "forecast.csv", index=False)
+    forecast_next_cycle(clean, fit_model(best, feats, seed=seed)).to_csv(out_dir / "forecast.csv", index=False)
 
     cols = trained[best].features
-    importance = permutation_importance(
-        trained[best].estimator,
-        test[cols],
-        test[TARGET],
-        scoring="neg_mean_absolute_error",
-        n_repeats=10,
-        random_state=seed,
-    )
-    imp = pd.Series(importance.importances_mean, index=cols).sort_values(ascending=False)
+    if best == "persistence":
+        imp = pd.Series(1.0, index=["lag1_total_score"])
+    else:
+        importance = permutation_importance(
+            trained[best].estimator,
+            test[cols],
+            test[TARGET],
+            scoring="neg_mean_absolute_error",
+            n_repeats=10,
+            random_state=seed,
+        )
+        imp = pd.Series(importance.importances_mean, index=cols).sort_values(ascending=False)
 
     if figures:
         fig_dir = out_dir / "figures"
@@ -89,6 +127,7 @@ def run_experiment(
         viz.plot_feature_importance(imp, fig_dir / "feature_importance.png")
         viz.plot_model_comparison(metrics, fig_dir / "model_comparison.png")
 
+    yearly_shift = test["year_mean"] - test["prev_year_mean"]
     result: dict[str, Any] = {
         "test_year": test_year,
         "train_years": sorted(int(y) for y in train["year"].unique()),
@@ -97,6 +136,7 @@ def run_experiment(
         "metrics": metrics,
         "best_model": best,
         "mae_improvement_over_persistence_pct": improvement,
+        "scale_shift_in_test_year": round(float(yearly_shift.iloc[0]), 4),
         "top_features": [str(f) for f in imp.head(5).index],
         "provenance": {
             "data_file": data_path.name,
@@ -112,15 +152,9 @@ def run_experiment(
 
 
 def select_model(feats: pd.DataFrame, seed: int = 42) -> str:
-    """Pick the candidate model with the lowest MAE on the latest year held out."""
-    train, test = temporal_split(feats, int(feats["year"].max()))
-    scores = {}
-    for name in MODEL_NAMES:
-        if name == "persistence":
-            continue
-        pred = fit_model(name, train, seed=seed).predict(test)["predicted_score"].to_numpy()
-        scores[name] = evaluate(test[TARGET], pred)["mae"]
-    return min(scores, key=lambda n: scores[n])
+    """Pick the model with the lowest MAE on the latest year held out (the baseline included)."""
+    metrics, *_ = evaluate_models(feats, int(feats["year"].max()), seed)
+    return best_model(metrics)
 
 
 def forecast_university(data_path: str | Path, university: str, seed: int = 42) -> dict[str, Any]:
@@ -128,10 +162,7 @@ def forecast_university(data_path: str | Path, university: str, seed: int = 42) 
     clean = load_clean(data_path)
     feats = build_features(clean)
     name = select_model(feats, seed=seed)
-    model = fit_model(name, feats, seed=seed)
-    future = future_features(clean)
-    pred = future[["university", "year"]].join(model.predict(future))
-    pred["predicted_rank"] = rank_band(pred["predicted_score"])
+    pred = forecast_next_cycle(clean, fit_model(name, feats, seed=seed))
     match = pred[pred["university"].str.casefold() == university.strip().casefold()]
     if match.empty:
         raise ValueError(f"University not found in the latest year: {university!r}")

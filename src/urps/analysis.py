@@ -12,8 +12,9 @@ import pandas as pd
 from sklearn.inspection import permutation_importance
 
 from urps.data import PILLAR_WEIGHTS, PILLARS
-from urps.features import TARGET, build_features, future_features
-from urps.model import MODEL_NAMES, TrainedModel, evaluate, fit_model, rank_band, temporal_split
+from urps.features import TARGET, build_features
+from urps.model import TrainedModel, best_model, fit_model
+from urps.pipeline import evaluate_models, forecast_next_cycle
 
 INDICATOR_LABELS = {
     "total_score": "Overall score",
@@ -59,28 +60,24 @@ def build_bundle(clean: pd.DataFrame, seed: int = 42) -> Bundle:
     """Evaluate all models on the latest year, pick the best, refit it and forecast."""
     feats = build_features(clean)
     test_year = int(feats["year"].max())
-    train, test = temporal_split(feats, test_year)
-
-    metrics: dict[str, dict[str, float]] = {}
-    trained: dict[str, TrainedModel] = {}
-    for name in MODEL_NAMES:
-        trained[name] = fit_model(name, train, seed=seed)
-        pred = trained[name].predict(test)["predicted_score"].to_numpy()
-        metrics[name] = evaluate(test[TARGET], pred, test["lag1_total_score"])
-
-    best = min((n for n in MODEL_NAMES if n != "persistence"), key=lambda n: metrics[n]["mae"])
+    metrics, trained, _, test = evaluate_models(feats, test_year, seed)
+    best = best_model(metrics)
+    # Relative scale (score minus the year's average) for the evaluation charts.
     test_predictions = test[["university", "year", TARGET]].join(trained[best].predict(test))
 
-    cols = trained[best].features
-    imp = permutation_importance(
-        trained[best].estimator,
-        test[cols],
-        test[TARGET],
-        scoring="neg_mean_absolute_error",
-        n_repeats=5,
-        random_state=seed,
-    )
-    importance = pd.Series(imp.importances_mean, index=cols).sort_values(ascending=False)
+    if best == "persistence":
+        importance = pd.Series(1.0, index=["lag1_total_score"])
+    else:
+        cols = trained[best].features
+        imp = permutation_importance(
+            trained[best].estimator,
+            test[cols],
+            test[TARGET],
+            scoring="neg_mean_absolute_error",
+            n_repeats=5,
+            random_state=seed,
+        )
+        importance = pd.Series(imp.importances_mean, index=cols).sort_values(ascending=False)
 
     final = fit_model(best, feats, seed=seed)
     return Bundle(
@@ -90,15 +87,8 @@ def build_bundle(clean: pd.DataFrame, seed: int = 42) -> Bundle:
         test_predictions=test_predictions,
         importance=importance,
         model=final,
-        forecast=_forecast(clean, final),
+        forecast=forecast_next_cycle(clean, final),
     )
-
-
-def _forecast(clean: pd.DataFrame, model: TrainedModel) -> pd.DataFrame:
-    future = future_features(clean)
-    out = future[["university", "year"]].join(model.predict(future))
-    out["predicted_rank"] = rank_band(out["predicted_score"])
-    return out.sort_values("predicted_score", ascending=False).reset_index(drop=True)
 
 
 def latest_indicators(clean: pd.DataFrame, university: str) -> pd.Series:
@@ -131,7 +121,7 @@ def what_if(bundle: Bundle, university: str, changes: dict[str, float]) -> dict[
         edited.loc[mask, pillar] = value
     edited.loc[mask, "total_score"] = min(100.0, max(0.0, float(row["total_score"]) + delta_total))
 
-    scenario = _forecast(edited, bundle.model).set_index("university").loc[university]
+    scenario = forecast_next_cycle(edited, bundle.model).set_index("university").loc[university]
     base = bundle.forecast.set_index("university").loc[university]
     return {
         "base_score": round(float(base["predicted_score"]), 2),

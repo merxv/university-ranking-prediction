@@ -1,22 +1,22 @@
 {
-  "note": "Reference run on data/sample/the_rankings_sample.csv with seed 42. Regenerate only after an intended change: urps run --data data/sample/the_rankings_sample.csv",
-  "best_model": "linear",
+  "note": "Reference run on data/sample/the_rankings_sample.csv with seed 42 (year-relative scores). Regenerate only after an intended change: urps run --data data/sample/the_rankings_sample.csv",
+  "best_model": "ridge",
   "test_year": 2025,
   "metrics": {
     "persistence": {
-      "mae": 0.9623,
-      "rmse": 1.1785,
+      "mae": 0.9581,
+      "rmse": 1.1771,
       "r2": 0.995
     },
-    "linear": {
-      "mae": 0.8201,
-      "rmse": 1.0083,
-      "r2": 0.9963
+    "ridge": {
+      "mae": 0.8163,
+      "rmse": 1.0026,
+      "r2": 0.9964
     },
     "gbm": {
-      "mae": 0.8995,
-      "rmse": 1.1104,
-      "r2": 0.9955
+      "mae": 0.8861,
+      "rmse": 1.0915,
+      "r2": 0.9957
     }
   }
 }
