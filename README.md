@@ -83,6 +83,32 @@ MAE improvement over persistence baseline: 14.8%
 > explains about 27% of the change, which is the honest measure of what it adds. **Rank error** (how
 > many places a predicted position is off) and **Spearman** correlation measure what users care about.
 
+### Docker
+
+The [`Dockerfile`](Dockerfile) has three stages: `build` (wheel), `test` (ruff + pytest run during the
+build) and `runtime` (slim image with the CLI, the dashboard and the sample data, non-root user, health check).
+
+```bash
+docker build -t urps .                       # runtime image
+docker run --rm -p 8501:8501 urps            # dashboard on http://localhost:8501
+docker run --rm urps run --data data/sample/the_rankings_sample.csv --out /tmp/reports
+docker build --target test .                 # run the test suite inside a container
+```
+
+Every push to `main` publishes the image to GitHub Container Registry:
+
+```bash
+docker run --rm -p 8501:8501 ghcr.io/merxv/university-ranking-prediction:latest
+```
+
+To run it on a local Kubernetes cluster (Minikube, kind or Docker Desktop):
+
+```bash
+minikube image load urps:latest              # or: kind load docker-image urps:latest
+kubectl apply -f k8s/
+kubectl port-forward service/urps 8501:80
+```
+
 ### Results on real data
 
 On the public Times Higher Education data 2011–2016 (`timesData.csv`, see [Data](#data)):
@@ -164,7 +190,9 @@ works; extra columns are ignored. Respect the terms of use of the data source.
 ├── tests/               # pytest suite + reference metrics for the regression test
 ├── data/sample/         # synthetic sample used by tests and CI
 ├── docs/                # technology justification and figures
-├── .github/workflows/   # ci.yml (integration), release.yml (delivery)
+├── .github/workflows/   # ci.yml (integration), docker.yml (image + Kubernetes deploy), release.yml (delivery)
+├── k8s/                 # Kubernetes Deployment and Service for the dashboard
+├── Dockerfile           # multi-stage image: build, test, runtime
 ├── pyproject.toml       # metadata, dependencies, pytest/ruff/mypy configuration
 └── constraints.txt      # pinned versions for reproducible installs
 ```
@@ -193,6 +221,7 @@ The suite (92 tests, coverage gate 80%, currently ~99%) contains:
 | Workflow | Trigger | Stages |
 |----------|---------|--------|
 | [`ci.yml`](.github/workflows/ci.yml) | push to `main`, every pull request | **quality** (ruff lint + format, mypy) → **test** (Ubuntu/Windows × Python 3.11/3.12, coverage) → **smoke** (full pipeline on the sample; quality gate: R² ≥ 0.85, explains part of the yearly change, beats the baseline; reports uploaded as artifact) |
+| [`docker.yml`](.github/workflows/docker.yml) | push to `main`, tag `v*`, every pull request | **test** (`docker build --target test`: ruff + pytest inside the container) → **build** (runtime image; smoke tests: CLI pipeline in the container, dashboard health check; push to `ghcr.io` except for PRs) → **deploy** (kind Kubernetes cluster: load image, `kubectl apply -f k8s/`, rollout, HTTP check of the service) |
 | [`release.yml`](.github/workflows/release.yml) | tag `v*` | tag = package version check → tests → build sdist/wheel → GitHub Release with packages and reports |
 
 `main` is protected: changes arrive through pull requests with green checks (GitHub Flow, see
@@ -201,7 +230,7 @@ The suite (92 tests, coverage gate 80%, currently ~99%) contains:
 ## Technology choices
 
 Python 3.11+, pandas, scikit-learn, pandera, matplotlib, Streamlit + Plotly, pytest + Hypothesis,
-ruff, mypy, GitHub Actions. The reasoning (weighted decision matrix, alternatives considered) is in
+ruff, mypy, GitHub Actions, Docker, Kubernetes (kind). The reasoning (weighted decision matrix, alternatives considered) is in
 [docs/technology-justification.md](docs/technology-justification.md).
 
 ## Limitations

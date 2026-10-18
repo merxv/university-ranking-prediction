@@ -7,6 +7,10 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and 
 ## [Unreleased]
 
 ### Added
+- Multi-stage `Dockerfile` (build, test, runtime) and `.dockerignore`; the runtime image runs the
+  dashboard by default and the CLI with arguments, as a non-root user with a health check.
+- `docker.yml` workflow: tests inside the container, image build and smoke tests, push to GitHub
+  Container Registry, deployment to a kind Kubernetes cluster using the manifests in `k8s/`.
 - Streamlit dashboard (`urps app`): trends, next-cycle forecast with what-if sliders, indicator
   influence, model evaluation, CSV upload and export.
 - `urps.analysis` service layer used by the dashboard (framework-independent, fully tested).
