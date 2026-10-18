@@ -1,0 +1,26 @@
+# Keep the build context small and the image free of local state
+.git/
+.github/
+.venv/
+venv/
+**/__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+reports/
+data/raw/
+docs/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.hypothesis/
+.coverage
+coverage.xml
+htmlcov/
+.claude/
+.vscode/
+.idea/
+k8s/
+Dockerfile
+.dockerignore

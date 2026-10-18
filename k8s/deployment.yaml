@@ -1,0 +1,62 @@
+# URPS dashboard on Kubernetes (kind in CI, or Minikube / Docker Desktop locally).
+#   kubectl apply -f k8s/
+#   kubectl port-forward service/urps 8501:80
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: urps
+  labels:
+    app: urps
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: urps
+  template:
+    metadata:
+      labels:
+        app: urps
+    spec:
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 1000
+      containers:
+        - name: dashboard
+          image: urps:latest
+          imagePullPolicy: IfNotPresent  # the image is loaded into the cluster, not pulled
+          ports:
+            - name: http
+              containerPort: 8501
+          readinessProbe:
+            httpGet:
+              path: /_stcore/health
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /_stcore/health
+              port: http
+            initialDelaySeconds: 20
+            periodSeconds: 20
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: "1"
+              memory: 1Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: urps
+  labels:
+    app: urps
+spec:
+  selector:
+    app: urps
+  ports:
+    - name: http
+      port: 80
+      targetPort: http

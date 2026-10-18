@@ -1,0 +1,154 @@
+# Docker pipeline: test inside a container -> build and smoke-test the runtime image
+# -> publish it to GitHub Container Registry -> deploy it to a throwaway Kubernetes cluster (kind).
+# Runs next to ci.yml, which stays the main Python CI.
+name: Docker
+
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: docker-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  IMAGE: ghcr.io/${{ github.repository }}
+
+jobs:
+  test:
+    name: Tests in container
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+      - name: Build the test stage (ruff + pytest run during the build)
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          target: test
+          cache-from: type=gha,scope=test
+          cache-to: type=gha,mode=max,scope=test
+
+  build:
+    name: Build, smoke-test and publish image
+    needs: test
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+
+      - name: Image tags and labels
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.IMAGE }}
+          tags: |
+            type=ref,event=branch
+            type=ref,event=pr
+            type=semver,pattern={{version}}
+            type=sha
+            type=raw,value=latest,enable={{is_default_branch}}
+
+      - name: Build runtime image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          target: runtime
+          load: true
+          tags: |
+            urps:latest
+            ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha,scope=runtime
+          cache-to: type=gha,mode=max,scope=runtime
+
+      - name: Smoke test - CLI pipeline inside the container
+        run: |
+          docker run --rm urps:latest --version
+          docker run --rm -v "$PWD/reports:/tmp/reports" --user "$(id -u)" urps:latest \
+            run --data data/sample/the_rankings_sample.csv --out /tmp/reports --no-figures
+          python3 -c "import json; r = json.load(open('reports/metrics.json')); assert r['metrics'][r['best_model']]['r2'] >= 0.85; print('best model:', r['best_model'])"
+
+      - name: Smoke test - dashboard container becomes healthy
+        run: |
+          docker run -d --name urps -p 8501:8501 urps:latest
+          for i in $(seq 1 30); do
+            status=$(docker inspect -f '{{.State.Health.Status}}' urps)
+            echo "health: $status"
+            [ "$status" = healthy ] && break
+            sleep 5
+          done
+          curl -fsS http://localhost:8501/_stcore/health
+          docker logs urps
+          [ "$status" = healthy ]
+
+      - name: Image size
+        run: docker image ls urps:latest
+
+      - name: Log in to GitHub Container Registry
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Push image
+        if: github.event_name != 'pull_request'
+        run: |
+          echo "${{ steps.meta.outputs.tags }}" | while read -r tag; do
+            [ -n "$tag" ] && docker push "$tag"
+          done
+
+      - name: Save image for the deploy job
+        if: github.event_name != 'pull_request'
+        run: docker save urps:latest -o urps-image.tar
+
+      - uses: actions/upload-artifact@v4
+        if: github.event_name != 'pull_request'
+        with:
+          name: urps-image
+          path: urps-image.tar
+          retention-days: 1
+
+  deploy:
+    name: Deploy to Kubernetes (kind)
+    needs: build
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    environment: test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: urps-image
+
+      - name: Create kind cluster
+        uses: helm/kind-action@v1
+        with:
+          cluster_name: urps-test
+
+      - name: Load image into the cluster
+        run: kind load image-archive urps-image.tar --name urps-test
+
+      - name: Apply manifests and wait for the rollout
+        run: |
+          kubectl apply -f k8s/
+          kubectl rollout status deployment/urps --timeout=180s
+          kubectl get deployments,pods,services -o wide
+
+      - name: Check the deployed service
+        run: |
+          kubectl port-forward service/urps 8080:80 &
+          for i in $(seq 1 15); do curl -fsS http://localhost:8080/_stcore/health && break; sleep 2; done
+          echo
+          curl -fsS -o /dev/null -w "dashboard page: HTTP %{http_code}\n" http://localhost:8080/
