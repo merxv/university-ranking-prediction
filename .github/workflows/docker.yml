@@ -74,6 +74,8 @@ jobs:
       - name: Smoke test - CLI pipeline inside the container
         run: |
           docker run --rm urps:latest --version
+          # Create the mount point as the runner user; otherwise Docker creates it owned by root
+          mkdir -p reports
           docker run --rm -v "$PWD/reports:/tmp/reports" --user "$(id -u)" urps:latest \
             run --data data/sample/the_rankings_sample.csv --out /tmp/reports --no-figures
           python3 -c "import json; r = json.load(open('reports/metrics.json')); assert r['metrics'][r['best_model']]['r2'] >= 0.85; print('best model:', r['best_model'])"
